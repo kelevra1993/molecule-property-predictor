@@ -80,9 +80,6 @@ inference:
     # Index of the model iteration that will be used for inference,
     # by default if it is set to None evaluation will be done on all models
     index_iteration: None
-    freeze:
-        freeze_model: False
-        freeze_all: False
 
     # Choice to scale results that are fed to the softmax function
     scaler: null
