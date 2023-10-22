@@ -14,6 +14,7 @@ def format_configuration_variables(config):
         "PROJECT_FOLDER": config["folder_structure"]["project_folder"],
         "train_csv_file": config["folder_structure"]["data_files"]["train"],
         "valid_csv_file": config["folder_structure"]["data_files"]["validation"],
+        "test_csv_file": config["folder_structure"]["data_files"]["test"],
         "field_delimiter": config["data"]["field_delimiter"],
         "label_dictionary": config["data"]["label_dictionary"],
         "num_classes": len(config["data"]["label_dictionary"]),
