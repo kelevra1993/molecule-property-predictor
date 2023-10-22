@@ -1,9 +1,14 @@
 """
 File that contains code for the data management
 """
+import os
+import numpy as np
+import openpyxl as opxl
 import tensorflow as tf
+
 # Disable eager mode
 tf.compat.v1.disable_eager_execution()
+from rdkit.Chem import rdMolDescriptors, MolFromSmiles, rdmolfiles, rdmolops
 
 
 def create_dataset(csv_file, column_defaults, field_delimiter):
@@ -104,3 +109,119 @@ def count_records(session, column_defaults, csv_file, field_delimiter):
             break
 
     return record_count
+
+
+def fingerprint_features(smile_string, radius, size, use_chirality, use_bond_types, use_features):
+    """
+    Function that makes a fingerprint from a smile string
+    :param smile_string: (str) smile string of a molecule
+    :param radius: (int) considered radius
+    :param size: (int) output size of the fingerprint
+    :param use_chirality: (bool) choice to use chirality
+    :param use_bond_types: (bool) choice to use bond types
+    :param use_features: (bool) choice to use features
+    :return:
+    """
+    molecule = MolFromSmiles(smile_string)
+
+    new_order = rdmolfiles.CanonicalRankAtoms(molecule)
+
+    molecule = rdmolops.RenumberAtoms(molecule, new_order)
+
+    # Extract MorganFingerprintAsBitVect
+    return rdMolDescriptors.GetMorganFingerprintAsBitVect(molecule, radius,
+                                                          nBits=size,
+                                                          useChirality=use_chirality,
+                                                          useBondTypes=use_bond_types,
+                                                          useFeatures=use_features)
+
+
+def create_one_hot_vector(index, num_classes):
+    """
+    Function that creates a one hot encoding vector
+    :param index: (int) index at which we would like to add the 1
+    :param num_classes: (int) dimension of our vector
+    :return:
+    """
+    label = np.zeros(num_classes)
+    np.put(label, index, 1)
+
+    return label
+
+
+def prepare_data(data, num_classes, fingerprint_type, **kwargs):
+    """
+    Function that gets data and prepares it in order to be inserted in the neural network
+    :param data: (tuple) One line from the csv dataset file
+    :param num_classes: (int) number of classes
+    :param fingerprint_type: (str) fingerprint type
+    :param kwargs: (dict) dictionary containing fingerprint parameters
+    :return:
+    """
+
+    label = create_one_hot_vector(index=int(data[0]), num_classes=num_classes)
+    id = data[1].decode("utf-8")
+    smile_string = data[2].decode("utf-8")
+
+    processed_smile_string_input = None
+
+    if fingerprint_type == "morgan":
+        smile_string_fingerprint = fingerprint_features(smile_string,
+                                                        radius=kwargs.get("radius"),
+                                                        size=kwargs.get("size"),
+                                                        use_chirality=kwargs.get("use_chirality"),
+                                                        use_bond_types=kwargs.get("use_bond_types"),
+                                                        use_features=kwargs.get("use_features"))
+
+        processed_smile_string_input = np.array([int(i) for i in smile_string_fingerprint.ToBitString()])
+
+    return label, id, smile_string, processed_smile_string_input
+
+
+def dump_info(label_dictionary, data_dictionary, counter_dictionary, output_file, template_path, scaler):
+    """
+    Function that dumps metric information into an excel file for analysis
+    :param label_dictionary: (dict)project label dictionary
+    :param data_dictionary: (dict) data dictionary from evaluation
+    :param counter_dictionary: (dict) counter of images per label
+    :param output_file: (str) desired path for results
+    :param template_path: (str) path of the template file
+    :return: dump all information about a model's evaluation in an excel file
+    """
+
+    # Load template workbook
+    wb = opxl.load_workbook(template_path, keep_vba=True)
+
+    # First we create worksheets for a given label in a label dictionary
+    for i in range(len(label_dictionary) - 1):
+        buffer_sheet = wb["Classifieur Binaire"]
+        wb.copy_worksheet(buffer_sheet)
+
+    # Rename worksheets
+    for en, sh in enumerate(wb):
+        sh.title = str(label_dictionary[en])
+
+    # sorting following the predicted class output
+    for k in data_dictionary:
+        data_dictionary[k].sort(key=lambda tup: tup[2])
+        data_dictionary[k].reverse()
+        sheet = wb[k]
+        for index, info in enumerate(data_dictionary[k]):
+            sheet["A" + str(index + 2)].value = info[0]
+            sheet["B" + str(index + 2)].value = info[1]
+            sheet["C" + str(index + 2)].value = info[2]
+
+        sheet["D" + str(2)].value = str(scaler) if scaler else "1.0"
+        sheet["D" + str(51)].value = counter_dictionary[k]
+
+    # Computation of Specificity which is equal to TN/(TN+FP)
+    for k in data_dictionary:
+        sheet = wb[k]
+        N = "+".join(["%s!$D$51" % l for l in label_dictionary.values() if l != k])
+        FP = "-".join(["$E$31", "$G$31"])
+        # Number of True Negatives of class k
+        TN = "(" + N + "-" + "(" + FP + ")" + ")"
+        sheet["F" + str(51)].value = "=100*" + TN + "/" + "(" + N + ")"
+
+    wb.save(output_file)
+    wb.close()
