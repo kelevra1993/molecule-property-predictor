@@ -62,11 +62,11 @@ model:
 training:
     settings:
         # Number of iterations after which we save a model and run inference on the whole validation dataset
-        weight_saver: 200
+        weight_saver: 10000
         # Number of iterations before output to Terminal
-        info_dump: 10
+        info_dump: 1000
         # Number of iterations that will be ran
-        num_iterations: 5000
+        num_iterations: 5000000
     hyperparameters:
         # Learning rate. Can either be a float (0.001) or a string with the format xe-y
         learning_rate: 2e-3
@@ -81,10 +81,3 @@ inference:
 
     # Choice to scale results that are fed to the softmax function
     scaler: null
-
-##############################################################################################
-#                                        Log params                                          #
-##############################################################################################
-logging:
-    # Choice to view Log errors
-    log_error: False
