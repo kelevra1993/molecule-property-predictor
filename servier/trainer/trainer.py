@@ -4,6 +4,8 @@ File that contains code for the Trainer Class
 import os
 import time
 import tensorflow as tf
+# Disable eager mode
+tf.compat.v1.disable_eager_execution()
 from utils import make_dir, print_green, safe_dump, print_yellow
 from data_manager.data_utils import get_model_placeholders, create_input_producer, count_records
 from models.model_utils import create_deep_learning_model, postprocess, setup_tensorboard, print_model_size, \
@@ -223,7 +225,8 @@ class Trainer:
 
         # Fetch the number of smile sequences in our test dataset
         print_yellow("\nCounting Sequences In Our Test Dataset...")
-        test_iterations = count_records(self.session, self.test_csv_file)
+        test_iterations = count_records(session=self.session, column_defaults=self.column_defaults,
+                                        csv_file=self.test_csv_file, field_delimiter=self.field_delimiter)
         print_green(f"There are {test_iterations} Smile String Sequences In Our Test Dataset")
 
         print(f"\nModel File : {self.raw_parameters}\n")

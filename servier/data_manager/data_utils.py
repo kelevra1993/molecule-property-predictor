@@ -2,6 +2,8 @@
 File that contains code for the data management
 """
 import tensorflow as tf
+# Disable eager mode
+tf.compat.v1.disable_eager_execution()
 
 
 def create_dataset(csv_file, column_defaults, field_delimiter):

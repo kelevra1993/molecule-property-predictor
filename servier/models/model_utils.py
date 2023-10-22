@@ -4,6 +4,8 @@ File that contains code for the model creation management
 import os
 import tf_slim as slim
 import tensorflow as tf
+# Disable eager mode
+tf.compat.v1.disable_eager_execution()
 from utils import print_yellow, print_green, print_red
 
 
