@@ -1,0 +1,95 @@
+# This file describes the configuration for the project (data, hyperparameters, etc.)
+# Some of the values have been set to usable defaults, while others will need to be changed
+
+##############################################################################################
+#                                          Folders                                           #
+##############################################################################################
+folder_structure:
+    # Path to folder where Model Training and Validation Information is stored.
+    project_folder: "path/to/experiment_folder"
+
+    data_files:
+        train: "path/to/training.csv"
+        validation: "path/to/validation.csv"
+        test: "path/to/test.csv"
+
+##############################################################################################
+#                                            Data                                            #
+##############################################################################################
+data:
+    # Labels For Project Ordered By Classification Index
+    label_dictionary:
+        { 0: "not_active", 1: "active" }
+
+    field_delimiter: "," # field delimiter for csv file
+
+##############################################################
+#                    Data Specifications                     #
+##############################################################
+fingerprint:
+    activated: True
+    type: "morgan"
+    parameters:
+        morgan:
+            radius: 2
+            size: 4096
+            use_chirality: True
+            use_bond_types: True
+            use_features: False
+
+##############################################################################################
+#                                            Model                                           #
+##############################################################################################
+model:
+    fully_connected_sizes: [256,128,64,32] # Number of neurons in fully connected matrices
+
+    # Preparation for second model that will have to take in smile sequence as input
+    aggregation:
+        type: "" # must be a value in ["blstm", "squeeze-and-excite"]
+        parameters:
+            # Bi-LSTM Parameters
+            blstm:
+                number_of_hidden_units: 100
+                number_of_layers: 2
+
+            # Squeeze And Excite Parameters
+            squeeze-and-excite:
+                number_of_matrices: 3
+
+##############################################################################################
+#                                          Training                                          #
+##############################################################################################
+training:
+    visualisation:
+        tensorboard: True
+    settings:
+        # Number of iterations after which we save a model and run inference on the whole validation dataset
+        weight_saver: 200
+        # Number of iterations before output to Terminal
+        info_dump: 10
+        # Number of iterations that will be ran
+        num_iterations: 5000
+    hyperparameters:
+        # Learning rate. Can either be a float (0.001) or a string with the format xe-y
+        learning_rate: 2e-3
+
+##############################################################################################
+#                                          Inference                                         #
+##############################################################################################
+inference:
+    # Index of the model iteration that will be used for inference,
+    # by default if it is set to None evaluation will be done on all models
+    index_iteration: None
+    freeze:
+        freeze_model: False
+        freeze_all: False
+
+    # Choice to scale results that are fed to the softmax function
+    scaler: null
+
+##############################################################################################
+#                                        Log params                                          #
+##############################################################################################
+logging:
+    # Choice to view Log errors
+    log_error: False
