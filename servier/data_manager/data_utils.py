@@ -71,3 +71,34 @@ def get_model_placeholders(sequence_input_shape, sequence_output_shape):
             sequence_label_placeholder = tf.compat.v1.placeholder(tf.float32, shape=sequence_output_shape)
 
     return sequence_data_placeholder, sequence_label_placeholder, normalization_phase
+
+
+def count_records(session, column_defaults, csv_file, field_delimiter):
+    """
+    Function that is used to count elements of a given csv file that will later be used.
+    :param session: (Tensor) Tensorflow session
+    :param column_defaults: List[Tensors] types of inputs that we get from the csv file
+    :param csv_file: (str) path to csv file
+    :return:
+    """
+
+    example_dataset = tf.data.experimental.CsvDataset(
+        filenames=[csv_file], record_defaults=column_defaults, header=True, field_delim=field_delimiter)
+
+    example_iterator = tf.compat.v1.data.make_initializable_iterator(example_dataset)
+
+    example_element = example_iterator.get_next()
+    example_initializer = example_iterator.initializer
+
+    session.run(example_initializer)
+
+    record_count = 0
+
+    while True:
+        try:
+            _ = session.run(example_element)
+            record_count += 1
+        except tf.errors.OutOfRangeError:
+            break
+
+    return record_count

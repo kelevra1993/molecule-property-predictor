@@ -2,8 +2,12 @@
 File that contains code for the Trainer Class
 """
 import os
+import time
 import tensorflow as tf
 from utils import make_dir, print_green, safe_dump, print_yellow
+from data_manager.data_utils import get_model_placeholders, create_input_producer, count_records
+from models.model_utils import create_deep_learning_model, postprocess, setup_tensorboard, print_model_size, \
+    restore_last_model
 
 
 class Trainer:
@@ -16,6 +20,7 @@ class Trainer:
         self.PROJECT_FOLDER = kwargs.get("PROJECT_FOLDER")
         self.train_csv_file = kwargs.get("train_csv_file")
         self.valid_csv_file = kwargs.get("valid_csv_file")
+        self.test_csv_file = kwargs.get("test_csv_file")
         self.field_delimiter = kwargs.get("field_delimiter")
         self.label_dictionary = kwargs.get("label_dictionary")
         self.num_classes = kwargs.get("num_classes")
@@ -25,7 +30,6 @@ class Trainer:
         self.aggregation_type = kwargs.get("aggregation_type")
         self.aggregation_parameters = kwargs.get("aggregation_parameters")
         self.fully_connected_sizes = kwargs.get("fully_connected_sizes")
-        self.tensorboard = kwargs.get("tensorboard")
         self.weight_saver = kwargs.get("weight_saver")
         self.info_dump = kwargs.get("info_dump")
         self.num_iterations = kwargs.get("num_iterations")
@@ -35,16 +39,41 @@ class Trainer:
         self.LOG_ERROR = kwargs.get("LOG_ERROR")
         self.training_variables = kwargs
 
+        # Setting up csv column defaults
+        # TODO label dictionary will give us the correct column_names
+        self.column_defaults = [tf.float32, tf.string, tf.string]
+
         # Always initialise project paths containing model weights and results
-        (self.modelPath, self.ResultPath, self.weightPath,
+        (self.raw_parameters, self.modelPath, self.ResultPath, self.weightPath,
          self.param_file, self.template_path, self.tensorboardPath) = self.initialize_project_paths()
 
         # Get input and output shapes
         self.sequence_input_shape, self.sequence_output_shape = self.get_data_input_output_shapes()
 
+        # Set Up Session and Saver
         self.session = tf.compat.v1.InteractiveSession()
 
-        print_green("project is set")
+        # Setup input and output placeholders
+        (self.sequence_data_placeholder, self.sequence_label_placeholder,
+         self.normalization_phase) = get_model_placeholders(sequence_input_shape=self.sequence_input_shape,
+                                                            sequence_output_shape=self.sequence_output_shape)
+        # Create the deep learning model
+        self.classification_tensor, self.softmax_tensor = create_deep_learning_model(
+            inputs=self.sequence_data_placeholder,
+            fully_connected_sizes=self.fully_connected_sizes,
+            scaler=self.scaler,
+            num_classes=self.num_classes)
+
+        # Get outputs as well as optimizers
+        self.training_step, self.cross_entropy_loss, self.accuracy = postprocess(
+            classification=self.classification_tensor,
+            label=self.sequence_label_placeholder,
+            learning_rate=self.learning_rate)
+
+        # Setup saver
+        self.saver = tf.compat.v1.train.Saver(max_to_keep=None)
+
+        print("Tensorflow Trainer - Evaluator Object Has Been Set")
 
     def initialize_project_paths(self):
         """
@@ -83,7 +112,7 @@ class Trainer:
         template_path = os.path.join("data_manager", "Template.xlsx")
         tensorboardPath = os.path.join(self.PROJECT_FOLDER, "Tensorboard")
 
-        return modelPath, ResultPath, weightPath, param_file, template_path, tensorboardPath
+        return raw_parameters, modelPath, ResultPath, weightPath, param_file, template_path, tensorboardPath
 
     def prepare_project_folder(self):
         """
@@ -92,6 +121,7 @@ class Trainer:
         """
         make_dir(self.weightPath)
         make_dir(self.ResultPath)
+        make_dir(self.tensorboardPath)
 
         # Saving Training parameters to a "params.json" file if it does not exist
         if not (os.path.exists(self.param_file)):
@@ -100,11 +130,6 @@ class Trainer:
         else:
             print_yellow("params.json already exists and does not need to be updated !!!\n")
 
-        # Tensorboard Path
-        if self.tensorboard:
-            make_dir(self.tensorboardPath)
-
-        # TODO TO BE RECODED, WE MIGHT USE A CSV INSTEAD
         # Results of validation on saved Models
         result_evaluation_file = os.path.join(self.modelPath, "Results.txt")
 
@@ -125,14 +150,86 @@ class Trainer:
 
         return sequence_input_shape, sequence_output_shape
 
-    def set_up_model(self):
-        pass
-
     def train(self):
 
         # Create project folders
         result_evaluation_file = self.prepare_project_folder()
 
-        # TODO label dictionary will give us the correct column_names
-        column_defaults = [tf.float32, tf.string, tf.string]
+        # Training Parameters
+        train_initializer, training_data_tensor = create_input_producer(csv_file=self.train_csv_file,
+                                                                        column_defaults=self.column_defaults,
+                                                                        name_scope="Training-Batch",
+                                                                        field_delimiter=self.field_delimiter)
+        # Validation Parameters
+        validation_initializer, validation_data_tensor = create_input_producer(csv_file=self.valid_csv_file,
+                                                                               column_defaults=self.column_defaults,
+                                                                               name_scope="Validation-Batch",
+                                                                               field_delimiter=self.field_delimiter)
+        # Testing Parameters
+        test_initializer, test_data_tensor = create_input_producer(csv_file=self.test_csv_file,
+                                                                   column_defaults=self.column_defaults,
+                                                                   name_scope="Test-Batch",
+                                                                   field_delimiter=self.field_delimiter)
 
+        # Setting Up Tensorboard
+        merged_view, train_file_writer, validation_file_writer = setup_tensorboard(loss=self.cross_entropy_loss,
+                                                                                   accuracy=self.cross_entropy_loss,
+                                                                                   session=self.session,
+                                                                                   tensorboard_path=self.tensorboardPath)
+        # Restore the last model used for training
+        iteration_last_model = restore_last_model(path=self.weightPath,
+                                                  session=self.session,
+                                                  saver=self.saver,
+                                                  last=True)
+
+        # Initialize tensorflow variables and get number of element in testing database
+        test_iterations = self.initialize_tensorflow_variables_and_print_summary()
+
+        # Running our data pipeline initializers
+        self.session.run([train_initializer, validation_initializer, test_initializer])
+
+        # get trackers
+        tracker_dictionary = self.get_trackers()
+
+        print_green(30 * "-")
+        print_green("Training Started....")
+        print_green(30 * "-" + "\n")
+
+        # Iterate through the model
+
+    def get_trackers(self):
+        """
+        Function that gets elements that we would like to tack during training process
+        :return:
+        """
+
+        tracker_dictionary = {"initial_start": time.time(),
+                              "start": time.time(),
+                              "training_moving_average": 0.0,
+                              "validation_moving_average": 0.0,
+                              "training_accuracy": 0.0,
+                              "validation_accuracy": 0.0
+                              }
+
+        return tracker_dictionary
+
+    def initialize_tensorflow_variables_and_print_summary(self):
+        """
+        Function that initializes tensorflow variables and prints out a summary
+        :return: test_iterations (int) number of elements in our test dataset
+        """
+        self.session.run(tf.compat.v1.global_variables_initializer())
+        self.session.run(tf.compat.v1.local_variables_initializer())
+
+        # Fetch the number of smile sequences in our test dataset
+        print_yellow("\nCounting Sequences In Our Test Dataset...")
+        test_iterations = count_records(self.session, self.test_csv_file)
+        print_green(f"There are {test_iterations} Smile String Sequences In Our Test Dataset")
+
+        print(f"\nModel File : {self.raw_parameters}\n")
+        print(f"Number Of Training Iterations : {self.num_iterations}")
+        print(f"Number Of Validation Iterations : {test_iterations} \n")
+
+        print_model_size()
+
+        return test_iterations
