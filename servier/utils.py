@@ -25,7 +25,6 @@ def format_configuration_variables(config):
         "aggregation_parameters": config["model"]["aggregation"]["parameters"][
             config["model"]["aggregation"]["type"]] if config["model"]["aggregation"]["type"] else {},
         "fully_connected_sizes": config["model"]["fully_connected_sizes"],
-        "tensorboard": config["training"]["visualisation"]["tensorboard"],
         "weight_saver": config["training"]["settings"]["weight_saver"],
         "info_dump": config["training"]["settings"]["info_dump"],
         "num_iterations": config["training"]["settings"]["num_iterations"],

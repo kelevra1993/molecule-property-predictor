@@ -60,8 +60,6 @@ model:
 #                                          Training                                          #
 ##############################################################################################
 training:
-    visualisation:
-        tensorboard: True
     settings:
         # Number of iterations after which we save a model and run inference on the whole validation dataset
         weight_saver: 200
