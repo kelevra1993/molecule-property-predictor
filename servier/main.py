@@ -1,5 +1,4 @@
 import argparse
-
 from utils import load_configuration_variables, print_red
 from trainer.trainer import Trainer
 
@@ -19,7 +18,7 @@ def main(configuration_file, train_mode, evaluate_mode, predict_mode):
     trainer_object = Trainer(**project_configuration_variables)
 
     if train_mode:
-        # do training
+        trainer_object.train()
         pass
 
     if evaluate_mode:
