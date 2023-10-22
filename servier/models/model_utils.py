@@ -2,8 +2,12 @@
 File that contains code for the model creation management
 """
 import os
+import sys
+import time
+import numpy as np
 import tf_slim as slim
 import tensorflow as tf
+
 # Disable eager mode
 tf.compat.v1.disable_eager_execution()
 from utils import print_yellow, print_green, print_red
@@ -159,3 +163,75 @@ def print_model_size():
     print_yellow("----------------------------------")
     print_yellow("Estimated Model Size :: %.2f Mo" % (int(total_bytes) / int(1e6)))
     print_yellow("----------------------------------\n")
+
+
+def console_log_update_tracker(iterations, tracker_dictionary, info_dump):
+    """
+    :param iterations: (int) Global step during training for a given model
+    :param tracker_dictionary: (dict) dictionary containing tracker information
+    :param info_dump: (int) number of iteration that were ran from previous information dump
+    """
+    print("-------------------------------------------------------------")
+    print(f"We called the model {iterations} times")
+    print(
+        f"Moving Average of Training Loss is       : {np.round((tracker_dictionary['training_moving_loss'] / info_dump), 2)}")
+    print(
+        f"Moving Average of Validation Loss is     : {np.round((tracker_dictionary['validation_moving_loss'] / info_dump), 2)}")
+    print(
+        f"Moving Average of Training Accuracy is   : {np.round(100 * (tracker_dictionary['training_moving_accuracy'] / info_dump), 2)}%")
+    print(
+        f"Moving Average of Validation Accuracy is : {np.round(100 * (tracker_dictionary['validation_moving_accuracy'] / info_dump), 2)}%")
+    print("These %d Iterations took %d Seconds" % (info_dump, (time.time() - tracker_dictionary['start'])))
+    print("-------------------------------------------------------------")
+
+    tracker_dictionary["start"] = time.time()
+    tracker_dictionary["training_moving_accuracy"] = 0.0
+    tracker_dictionary["validation_moving_accuracy"] = 0.0
+    tracker_dictionary["training_moving_loss"] = 0.0
+    tracker_dictionary["validation_moving_loss"] = 0.0
+
+    return tracker_dictionary
+
+
+def manage_error_during_training(iteration, message, saver, session, weight_path):
+    """
+    Function that saves model when there has been an error encountered
+    :param iteration: (int) index iteration of the given model
+    :param message: (str) message that we would like to print once the error has been encountered
+    :param saver: (Tensor) saver
+    :param session: (Tensor) session
+    :param weight_path: (str) folder of path where we would like to store the model weights
+    :return:
+    """
+    print_red(message)
+    print(f"Saving the current model at iteration {iteration}")
+    print_yellow("Model is being saved.....")
+    saver.save(session, weight_path + f"/Iteration_{iteration}")
+    dump_in_checkpoint(weight_path, iteration)
+    print_green("model has been saved successfully")
+    session.close()
+    sys.exit()
+
+
+def dump_in_checkpoint(path, model_iteration):
+    """
+    Function that dumps model iteration in checkpoint file for traceability
+    :param path: path where to store the checkpoint file
+    :param model_iteration: Index of the model iteration that will be added to the checkpoint file
+    :return:
+    """
+    checkpoint_file = os.path.join(path, "full-checkpoint")
+    try:
+        with open(checkpoint_file, "r") as f:
+            d = f.readlines()
+    except FileNotFoundError:
+        d = []
+    with open(os.path.join(path, "full-checkpoint"), "w") as f:
+        if len(d) == 0:
+            d.append(f'model_checkpoint_path: "Iteration_{model_iteration}"\n')
+            d.append(f'all_model_checkpoint_paths: "Iteration_{model_iteration}"\n')
+        else:
+            d[0] = f'model_checkpoint_path: "Iteration_{model_iteration}"\n'
+            d.append(f'all_model_checkpoint_paths: "Iteration_{model_iteration}"\n')
+        for line in d:
+            f.write(line)
