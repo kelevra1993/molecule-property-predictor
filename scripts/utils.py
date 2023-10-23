@@ -1,4 +1,8 @@
+import numpy as np
 import pandas as pd
+from collections import Counter
+
+np.set_printoptions(linewidth=200)
 
 
 def split_dataframe_by_percentage(dataframe, percent):
@@ -62,3 +66,47 @@ def balance_dataframe(dataframe, column_name):
     balanced_df = balanced_df.sample(frac=1).reset_index(drop=True)
 
     return balanced_df
+
+
+def extract_unique_characters(dataframe, column_name):
+    """
+    Extracts all unique characters from a DataFrame column containing strings.
+
+    :param dataframe: (DataFrame) The input DataFrame.
+    :param column_name: (str) The name of the column containing strings.
+    :return: (list) A sorted list of unique characters found in the specified column.
+    """
+    # Create an empty set to store unique characters
+    unique_chars = set()
+
+    # Iterate through the column and extract characters
+    for string in dataframe[column_name]:
+        unique_chars.update(set(string))
+
+    # Convert the set to a sorted list
+    unique_chars_list = sorted(list(unique_chars))
+
+    return unique_chars_list
+
+
+def have_same_elements(list1, list2):
+    """
+    Check if two lists have the same elements, regardless of their order.
+    :param list1: (list) The first list.
+    :param list2: (list) The second list.
+    :return: (bool) True if both lists have the same elements, False otherwise.
+    """
+    return Counter(list1) == Counter(list2)
+
+
+def create_one_hot_vector(index, num_classes):
+    """
+    Function that creates a one hot encoding vector
+    :param index: (int) index at which we would like to add the 1
+    :param num_classes: (int) dimension of our vector
+    :return:
+    """
+    label = np.zeros(num_classes, dtype=np.float32)
+    np.put(label, index, float(1.0))
+
+    return label
