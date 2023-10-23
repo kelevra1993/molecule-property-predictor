@@ -25,6 +25,8 @@ def format_configuration_variables(config):
         "field_delimiter": config["data"]["field_delimiter"],
         "label_dictionary": config["data"]["label_dictionary"],
         "num_classes": len(config["data"]["label_dictionary"]),
+        "multiple_property_prediction": config["data"]["multiple_property_prediction"]["activated"],
+        "number_of_prediction_columns": config["data"]["multiple_property_prediction"]["number_of_prediction_columns"],
         "use_fingerprint": config["fingerprint"]["activated"],
         "fingerprint_type": config["fingerprint"]["type"],
         "fingerprint_parameters": config["fingerprint"]["parameters"][config["fingerprint"]["type"]] if
@@ -57,6 +59,8 @@ def load_configuration_variables(experiment_name="project_config.example.yml"):
     # Load project configuration variables
     try:
         project_configuration_variables = format_configuration_variables(yaml.safe_load(open(setup_file, 'r')))
+    except KeyError:
+        raise
     except:
         print_red(f"This Configuration File {setup_file} Does Not Exist ")
         exit()
@@ -191,9 +195,9 @@ def configure_cell_text_and_colors(array_dataframe, line, column, CellText, face
         font_prop = matplotlib.font_manager.FontProperties(weight="bold", size=font_size)
 
         text_kwargs = dict(
-            color=[0.7059, 0.7451, 0.9412, 1.0], ha="center", va="center", gid="sum", fontproperties=font_prop )
+            color=[0.7059, 0.7451, 0.9412, 1.0], ha="center", va="center", gid="sum", fontproperties=font_prop)
 
-        lis_txt = ["%d " % (cell_value), per_ok_s]
+        lis_txt = ["%d " % cell_value, per_ok_s]
         lis_kwa = [text_kwargs]
 
         dic = text_kwargs.copy()

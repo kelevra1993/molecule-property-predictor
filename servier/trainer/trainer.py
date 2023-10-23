@@ -31,6 +31,8 @@ class Trainer:
         self.valid_csv_file = kwargs.get("valid_csv_file")
         self.test_csv_file = kwargs.get("test_csv_file")
         self.field_delimiter = kwargs.get("field_delimiter")
+        self.multiple_property_prediction = kwargs.get("multiple_property_prediction")
+        self.number_of_prediction_columns = kwargs.get("number_of_prediction_columns")
         self.label_dictionary = kwargs.get("label_dictionary")
         self.num_classes = kwargs.get("num_classes")
         self.use_fingerprint = kwargs.get("use_fingerprint")
@@ -48,8 +50,14 @@ class Trainer:
         self.training_variables = kwargs
 
         # Setting up csv column defaults
-        # TODO label dictionary will give us the correct column_names
-        self.column_defaults = [tf.float32, tf.string, tf.string]
+        if self.multiple_property_prediction:
+            self.column_defaults = []
+            for i in range(self.number_of_prediction_columns):
+                self.column_defaults.append(tf.float32)
+            # Add sequence id as well as smile string
+            self.column_defaults.extend([tf.string, tf.string])
+        else:
+            self.column_defaults = [tf.float32, tf.string, tf.string]
 
         # Always initialise project paths containing model weights and results
         (self.raw_parameters, self.modelPath, self.ResultPath, self.weightPath,
@@ -69,6 +77,8 @@ class Trainer:
         self.classification_tensor, self.softmax_tensor = create_deep_learning_model(
             inputs=self.sequence_data_placeholder,
             use_fingerprint=self.use_fingerprint,
+            multiple_property_prediction=self.multiple_property_prediction,
+            number_of_prediction_columns=self.number_of_prediction_columns,
             aggregation_type=self.aggregation_type,
             aggregation_parameters=self.aggregation_parameters,
             fully_connected_sizes=self.fully_connected_sizes,
@@ -94,6 +104,11 @@ class Trainer:
         """
         # Raw parameters for model information storage
         params = ""
+
+        # Dealing with a model that predicts multiple properties
+        if self.multiple_property_prediction and self.number_of_prediction_columns:
+            params += f"MULTI-{self.number_of_prediction_columns}-"
+
         if self.use_fingerprint and self.fingerprint_type:
             if self.fingerprint_type == "morgan":
                 params += "MORGAN("
@@ -112,7 +127,7 @@ class Trainer:
         if self.aggregation_type and not self.use_fingerprint:
             aggregation_name = str(self.aggregation_type.upper()) + (
                     "_" + "_".join([f"({value})" for value in self.aggregation_parameters.values()]))
-            aggregation_name+='-'
+            aggregation_name += '-'
 
         raw_parameters = (params + aggregation_name + '_'.join(map(str, self.fully_connected_sizes)))
 
@@ -152,7 +167,6 @@ class Trainer:
         Function that get data input and output shapes based on user configuration specifications
         :return: sequence_input_shape (list[int]),sequence_output_shape (list[int])
         """
-        sequence_input_shape = None
 
         # Define sequence input shape and output shape
         if self.use_fingerprint and self.fingerprint_type == "morgan":
@@ -160,7 +174,11 @@ class Trainer:
         else:
             sequence_input_shape = [None, len(get_naive_encoder())]
 
-        sequence_output_shape = [1, self.num_classes]
+        # Dealing with multi-classification
+        if self.multiple_property_prediction:
+            sequence_output_shape = [self.number_of_prediction_columns, self.num_classes]
+        else:
+            sequence_output_shape = [1, self.num_classes]
 
         return sequence_input_shape, sequence_output_shape
 
@@ -220,15 +238,20 @@ class Trainer:
                 validation_data = self.session.run([validation_data_tensor])[0]
 
                 # Get Training and validation data
-                (sequence_label, sequence_id, sequence_name, sequence_data) = prepare_data(data=training_data,
-                                                                                           num_classes=self.num_classes,
-                                                                                           use_fingerprint=self.use_fingerprint,
-                                                                                           fingerprint_type=self.fingerprint_type,
-                                                                                           **self.fingerprint_parameters)
+                (sequence_label, sequence_id, sequence_name, sequence_data) = prepare_data(
+                    data=training_data,
+                    num_classes=self.num_classes,
+                    multiple_property_prediction=self.multiple_property_prediction,
+                    number_of_prediction_columns=self.number_of_prediction_columns,
+                    use_fingerprint=self.use_fingerprint,
+                    fingerprint_type=self.fingerprint_type,
+                    **self.fingerprint_parameters)
 
                 (valid_sequence_label, valid_sequence_id, valid_sequence_name, valid_sequence_data) = prepare_data(
                     data=validation_data,
                     num_classes=self.num_classes,
+                    multiple_property_prediction=self.multiple_property_prediction,
+                    number_of_prediction_columns=self.number_of_prediction_columns,
                     use_fingerprint=self.use_fingerprint,
                     fingerprint_type=self.fingerprint_type,
                     **self.fingerprint_parameters)
@@ -238,13 +261,15 @@ class Trainer:
                     [self.training_step, self.cross_entropy_loss, self.softmax_tensor, self.accuracy_tensor,
                      merged_summary_tensor],
                     feed_dict={self.sequence_data_placeholder: sequence_data,
-                               self.sequence_label_placeholder: [sequence_label]})
+                               self.sequence_label_placeholder: [
+                                   sequence_label] if not self.multiple_property_prediction else sequence_label})
 
                 # Run the Neural Network for Validation
                 (validation_loss, validation_softmax, validation_accuracy, validation_summary,) = self.session.run(
                     [self.cross_entropy_loss, self.softmax_tensor, self.accuracy_tensor, merged_summary_tensor],
                     feed_dict={self.sequence_data_placeholder: valid_sequence_data,
-                               self.sequence_label_placeholder: [valid_sequence_label]})
+                               self.sequence_label_placeholder: [
+                                   valid_sequence_label] if not self.multiple_property_prediction else valid_sequence_label})
 
                 # Update trackers
                 tracker_dictionary["training_moving_loss"] += training_loss
@@ -300,9 +325,10 @@ class Trainer:
         :return:
         """
         # Counter Initiation
-        (correctly_predicted_dictionary, counter_dictionary, data_dictionary,
-         confusion_matrix) = self.initialize_counters(label_dictionary=self.label_dictionary,
-                                                      num_classes=self.num_classes)
+        (correctly_predicted_dictionary, multi_correctly_predicted_dictionary, counter_dictionary,
+         multi_counter_dictionary, data_dictionary, confusion_matrix) = self.initialize_counters(
+            label_dictionary=self.label_dictionary,
+            num_classes=self.num_classes)
 
         # Test accuracy on test set
         test_accuracy = 0.0
@@ -314,17 +340,34 @@ class Trainer:
         for test_iteration in tqdm(range(test_iterations), desc="Model Evaluation"):
             test_data = self.session.run([test_data_tensor])[0]
 
-            (sequence_label, sequence_id, sequence_name, sequence_data) = prepare_data(data=test_data,
-                                                                                       num_classes=self.num_classes,
-                                                                                       use_fingerprint=self.use_fingerprint,
-                                                                                       fingerprint_type=self.fingerprint_type,
-                                                                                       **self.fingerprint_parameters)
+            (sequence_label, sequence_id, sequence_name, sequence_data) = prepare_data(
+                data=test_data,
+                num_classes=self.num_classes,
+                multiple_property_prediction=self.multiple_property_prediction,
+                number_of_prediction_columns=self.number_of_prediction_columns,
+                use_fingerprint=self.use_fingerprint,
+                fingerprint_type=self.fingerprint_type,
+                **self.fingerprint_parameters)
+
             # launch inference
             softmax, accuracy = self.session.run([self.softmax_tensor, self.accuracy_tensor],
                                                  feed_dict={self.sequence_data_placeholder: sequence_data,
-                                                            self.sequence_label_placeholder: [sequence_label]})
+                                                            self.sequence_label_placeholder: [
+                                                                sequence_label] if not self.multiple_property_prediction else sequence_label})
 
             test_accuracy += accuracy
+
+            # multiple property prediction insertion
+            if self.multiple_property_prediction:
+                # For each column prediction count the elements as well as keep track of correct predictions
+                # Temporary, ignoring moving forward since nothing is yet coded for display
+                for sample_index, sample_column in enumerate(["P2", "P1", "P3", "P4", "P5", "P6", "P7", "P8", "P9"]):
+                    label_index = np.argmax(sequence_label[sample_index])
+                    predicted_index = np.argmax(softmax[sample_index], 0)
+                    multi_counter_dictionary[sample_column][self.label_dictionary[label_index]] += 1
+                    if predicted_index == label_index:
+                        multi_correctly_predicted_dictionary[sample_column][self.label_dictionary[label_index]] += 1
+                continue
 
             # Fine grained evaluation
             # Dealing with a given label
@@ -349,15 +392,25 @@ class Trainer:
         time.sleep(1)
         test_accuracy = 100 * (test_accuracy / test_iterations)
 
-        message_list = []
-        message_list.append("\n" + 50 * "-")
-        message_list.append(f"Model Iteration {iteration} Global Accuracy : {np.round(test_accuracy, 2)}%")
+        message_list = ["\n" + 50 * "-", f"Model Iteration {iteration} Global Accuracy : {np.round(test_accuracy, 2)}%"]
         class_recalls = []
-        for k, v in correctly_predicted_dictionary.items():
-            message_list.append(f"Recall On {k} Class Is : {np.round(100 * (v / counter_dictionary[k]), 2)}%")
-            class_recalls.append(100 * v / counter_dictionary[k])
-        message_list.append(f"Average Recall On Both Classes Is {np.round(np.mean(class_recalls), 2)}%")
-        message_list.append(50 * "-")
+
+        if self.multiple_property_prediction:
+            for property, true_positive_property in multi_correctly_predicted_dictionary.items():
+                property_class_recall = []
+                for k, v in true_positive_property.items():
+                    message_list.append(
+                        f"Recall On {k} Class For {property} Is : {np.round(100 * (v / multi_counter_dictionary[property][k]), 2)}%")
+                    property_class_recall.append(100 * v / multi_counter_dictionary[property][k])
+                message_list.append(f"Average Recall On Both Classes Is {np.round(np.mean(property_class_recall), 2)}%")
+                message_list.append(str(20 * "-") + f"{property}" + str(20 * "-"))
+            message_list.append(50 * "-")
+        else:
+            for k, v in correctly_predicted_dictionary.items():
+                message_list.append(f"Recall On {k} Class Is : {np.round(100 * (v / counter_dictionary[k]), 2)}%")
+                class_recalls.append(100 * v / counter_dictionary[k])
+            message_list.append(f"Average Recall On Both Classes Is {np.round(np.mean(class_recalls), 2)}%")
+            message_list.append(50 * "-")
 
         if inference_during_training:
             target = open(result_evaluation_file, "a")
@@ -372,6 +425,9 @@ class Trainer:
 
         iteration_result_folder = os.path.join(results_folder_path, f"Iteration_{iteration}")
         make_dir(iteration_result_folder)
+
+        if self.multiple_property_prediction:
+            return None
 
         # Then we dump information to a text file
         dump_info(self.label_dictionary,
@@ -416,6 +472,7 @@ class Trainer:
         """
         counter_dictionary = {}
         correctly_predicted_dictionary = {}
+
         data_dictionary = {}
         confusion_matrix = np.zeros((num_classes, num_classes), dtype=np.int32)
 
@@ -424,7 +481,15 @@ class Trainer:
             correctly_predicted_dictionary[label_dictionary[i]] = 0
             data_dictionary[label_dictionary[i]] = []
 
-        return correctly_predicted_dictionary, counter_dictionary, data_dictionary, confusion_matrix
+        multi_counter_dictionary = {}
+        multi_correctly_predicted_dictionary = {}
+        if self.multiple_property_prediction:
+            for i in range(1, self.number_of_prediction_columns + 1):
+                multi_counter_dictionary[f"P{i}"] = {v: 0 for v in label_dictionary.values()}
+                multi_correctly_predicted_dictionary[f"P{i}"] = {v: 0 for v in label_dictionary.values()}
+
+        return (correctly_predicted_dictionary, multi_correctly_predicted_dictionary, counter_dictionary,
+                multi_counter_dictionary, data_dictionary, confusion_matrix)
 
     def initialize_tensorflow_variables_and_print_summary(self):
         """

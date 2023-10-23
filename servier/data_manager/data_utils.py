@@ -178,10 +178,17 @@ def create_one_hot_vector(index, num_classes):
     return label
 
 
-def prepare_data(data, num_classes,use_fingerprint, fingerprint_type, **kwargs):
+def prepare_data(data,
+                 num_classes,
+                 multiple_property_prediction,
+                 number_of_prediction_columns,
+                 use_fingerprint,
+                 fingerprint_type, **kwargs):
     """
     Function that gets data and prepares it in order to be inserted in the neural network
     :param data: (tuple) One line from the csv dataset file
+    :param multiple_property_prediction: (bool) boolean that indicates whether on not we are dealing with multi-labeling
+    :param number_of_prediction_columns: (int) Number of prediction columns
     :param num_classes: (int) number of classes
     :param use_fingerprint: (int) choice to use fingerprint or naive approach
     :param fingerprint_type: (str) fingerprint type
@@ -189,9 +196,14 @@ def prepare_data(data, num_classes,use_fingerprint, fingerprint_type, **kwargs):
     :return:
     """
 
-    label = create_one_hot_vector(index=int(data[0]), num_classes=num_classes)
-    id = data[1].decode("utf-8")
-    smile_string = data[2].decode("utf-8")
+    if multiple_property_prediction:
+        label = np.array([create_one_hot_vector(index=int(data[column]), num_classes=num_classes) for column in
+                 range(number_of_prediction_columns)])
+    else:
+        label = create_one_hot_vector(index=int(data[0]), num_classes=num_classes)
+
+    id = data[-2].decode("utf-8")
+    smile_string = data[-1].decode("utf-8")
 
     if fingerprint_type == "morgan" and use_fingerprint:
         smile_string_fingerprint = fingerprint_features(smile_string,
@@ -202,7 +214,7 @@ def prepare_data(data, num_classes,use_fingerprint, fingerprint_type, **kwargs):
                                                         use_features=kwargs.get("use_features"))
 
         processed_smile_string_input = np.array([int(i) for i in smile_string_fingerprint.ToBitString()])
-        processed_smile_string_input = np.expand_dims(processed_smile_string_input,0)
+        processed_smile_string_input = np.expand_dims(processed_smile_string_input, 0)
     else:
         processed_smile_string_input = np.array([naive_encoder(character) for character in smile_string])
 

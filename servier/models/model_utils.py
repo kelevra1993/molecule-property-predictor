@@ -132,7 +132,7 @@ def apply_blstm_layers(inputs, number_of_hidden_units, number_of_layers, number_
         dtype=tf.float32)
 
     if number_of_matrices:
-        outputs = apply_aggregating_squeeze_and_excite(inputs=outputs[0],number_of_matrices=number_of_matrices)
+        outputs = apply_aggregating_squeeze_and_excite(inputs=outputs[0], number_of_matrices=number_of_matrices)
     else:
         # Used To Resize To A Single Array Input
         outputs = tf.reshape(outputs[-1][-1], [-1, 2 * number_of_hidden_units])
@@ -140,12 +140,15 @@ def apply_blstm_layers(inputs, number_of_hidden_units, number_of_layers, number_
     return outputs
 
 
-def create_deep_learning_model(inputs, use_fingerprint, aggregation_type, aggregation_parameters, fully_connected_sizes,
+def create_deep_learning_model(inputs, use_fingerprint, multiple_property_prediction, number_of_prediction_columns,
+                               aggregation_type, aggregation_parameters, fully_connected_sizes,
                                scaler, num_classes=None):
     """
     Function that creates that deep learning model that will be used for the classification task
     :param inputs: (Tensor) input tensor
     :param use_fingerprint: (bool) element that indicates that we are using a naive string
+    :param multiple_property_prediction: (bool) boolean that indicates whether on not we are dealing with multi-labeling
+    :param number_of_prediction_columns: (int) Number of prediction columns
     :param aggregation_type: (str) string specify the aggregation type that is being used
     :param aggregation_parameters: (dict) dictionary containing aggregation types that we are using
     :param fully_connected_sizes: (Tensor) List containing sizes of the fully connected layers
@@ -173,21 +176,33 @@ def create_deep_learning_model(inputs, use_fingerprint, aggregation_type, aggreg
             model_outputs = tf.nn.relu(model_outputs)
 
     with tf.name_scope("Classification-Layer"):
+
         # definition of classification layer
-        classifier = weight_variables([fully_connected_sizes[-1], num_classes], "Weights", trainable=True)
-        classifier_bias = bias_variables([num_classes], "Biases", trainable=True)
+        # Dealing with multiple property prediction
+        if multiple_property_prediction:
+            classifier = weight_variables([fully_connected_sizes[-1], num_classes * number_of_prediction_columns],
+                                          "Weights", trainable=True)
+            classifier_bias = bias_variables([num_classes * number_of_prediction_columns], "Biases", trainable=True)
+        else:
+            classifier = weight_variables([fully_connected_sizes[-1], num_classes], "Weights", trainable=True)
+            classifier_bias = bias_variables([num_classes], "Biases", trainable=True)
 
         # output of the neural network before softmax
         classification = tf.nn.bias_add(tf.matmul(model_outputs, classifier), classifier_bias,
                                         name="Classification-output")
+        # Reshape output to get our multiple classes
+        if multiple_property_prediction:
+            classification = tf.reshape(classification, [number_of_prediction_columns, num_classes])
 
     with tf.name_scope("Outputs"):
+        # Dealing with multiple property prediction
         # Scaling validation output to keep "dropout scaling coherence during training"
-        if scaler:
-            softmax = tf.nn.softmax(tf.multiply(classification, scaler), name="Softmax")
-        else:
-            softmax = tf.nn.softmax(classification, name="Softmax")
 
+        if scaler:
+            softmax = tf.nn.softmax(tf.multiply(classification, scaler),
+                                    axis=1 if multiple_property_prediction else None, name="Softmax")
+        else:
+            softmax = tf.nn.softmax(classification, axis=1 if multiple_property_prediction else None, name="Softmax")
     return classification, softmax
 
 

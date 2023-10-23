@@ -23,6 +23,10 @@ data:
 
     field_delimiter: "," # field delimiter for csv file
 
+    multiple_property_prediction:
+        activated: True # Boolean that indicates that we want P1, P2, P3, P4 ...,
+        number_of_prediction_columns: 9 # Number Of Columns that interest us
+
 ##############################################################
 #                    Data Specifications                     #
 ##############################################################
@@ -45,7 +49,7 @@ model:
 
     # Preparation for second model that will have to take in smile sequence as input
     aggregation:
-        type: "" # must be a value in ["blstm", "squeeze-and-excite"]
+        type: "blstm" # must be a value in ["blstm"]
         parameters:
             # Bi-LSTM Parameters
             blstm:
