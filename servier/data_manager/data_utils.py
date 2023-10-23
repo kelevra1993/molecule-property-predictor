@@ -11,6 +11,35 @@ tf.compat.v1.disable_eager_execution()
 from rdkit.Chem import rdMolDescriptors, MolFromSmiles, rdmolfiles, rdmolops
 
 
+def get_naive_encoder():
+    """
+    Function to get naive encoder for smile string characters
+    :return: naive_encoding_indices (dict) dictionary containing naive encodings
+    """
+    naive_encoding_indices = {"2": 0, "[": 1, "c": 2, "S": 3, "n": 4, "4": 5, "F": 6, "/": 7, "+": 8, "o": 9, "#": 10,
+                              "]": 11, "H": 12, "N": 13, "C": 14, "s": 15, "(": 16, "l": 17, "=": 18, ")": 19, "-": 20,
+                              "5": 21, "3": 22, "B": 23, "\\": 24, "r": 25, "6": 26, "O": 27, "1": 28, "unknown": 29}
+    return naive_encoding_indices
+
+
+def naive_encoder(character):
+    """
+    Function that encodes a character from a smile string into a vector.
+    :param character: (str) this a smile string character
+    :return:
+    """
+    naive_encoding_indices = get_naive_encoder()
+
+    encoding_dimensions = len(naive_encoding_indices)
+
+    if character in naive_encoding_indices:
+        encoded_character = create_one_hot_vector(naive_encoding_indices[character], num_classes=encoding_dimensions)
+    else:
+        encoded_character = create_one_hot_vector(naive_encoding_indices["unknown"], num_classes=encoding_dimensions)
+
+    return encoded_character
+
+
 def create_dataset(csv_file, column_defaults, field_delimiter):
     """
     Function that is used to create to get the data iteratively from the user's csv file
@@ -149,11 +178,12 @@ def create_one_hot_vector(index, num_classes):
     return label
 
 
-def prepare_data(data, num_classes, fingerprint_type, **kwargs):
+def prepare_data(data, num_classes,use_fingerprint, fingerprint_type, **kwargs):
     """
     Function that gets data and prepares it in order to be inserted in the neural network
     :param data: (tuple) One line from the csv dataset file
     :param num_classes: (int) number of classes
+    :param use_fingerprint: (int) choice to use fingerprint or naive approach
     :param fingerprint_type: (str) fingerprint type
     :param kwargs: (dict) dictionary containing fingerprint parameters
     :return:
@@ -163,9 +193,7 @@ def prepare_data(data, num_classes, fingerprint_type, **kwargs):
     id = data[1].decode("utf-8")
     smile_string = data[2].decode("utf-8")
 
-    processed_smile_string_input = None
-
-    if fingerprint_type == "morgan":
+    if fingerprint_type == "morgan" and use_fingerprint:
         smile_string_fingerprint = fingerprint_features(smile_string,
                                                         radius=kwargs.get("radius"),
                                                         size=kwargs.get("size"),
@@ -174,6 +202,9 @@ def prepare_data(data, num_classes, fingerprint_type, **kwargs):
                                                         use_features=kwargs.get("use_features"))
 
         processed_smile_string_input = np.array([int(i) for i in smile_string_fingerprint.ToBitString()])
+        processed_smile_string_input = np.expand_dims(processed_smile_string_input,0)
+    else:
+        processed_smile_string_input = np.array([naive_encoder(character) for character in smile_string])
 
     return label, id, smile_string, processed_smile_string_input
 
