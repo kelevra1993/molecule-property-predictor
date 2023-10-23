@@ -7,12 +7,13 @@ import numpy as np
 from tqdm import tqdm
 import tensorflow as tf
 
-# Disable eager mode
+# Disable eager mode and set printer options
 tf.compat.v1.disable_eager_execution()
+np.set_printoptions(linewidth=200)
 from utils import (make_dir, print_green, safe_dump, print_yellow,
                    print_blue, print_bold, print_red, plot_and_save_confusion_matrix)
 from data_manager.data_utils import (get_model_placeholders, create_input_producer,
-                                     count_records, prepare_data, dump_info)
+                                     count_records, prepare_data, dump_info, get_naive_encoder)
 from models.model_utils import (create_deep_learning_model, postprocess, setup_tensorboard, print_model_size,
                                 restore_last_model, console_log_update_tracker, manage_error_during_training,
                                 dump_in_checkpoint)
@@ -32,9 +33,9 @@ class Trainer:
         self.field_delimiter = kwargs.get("field_delimiter")
         self.label_dictionary = kwargs.get("label_dictionary")
         self.num_classes = kwargs.get("num_classes")
-        self.use_finger_print = kwargs.get("use_finger_print")
-        self.finger_print_type = kwargs.get("finger_print_type")
-        self.finger_print_parameters = kwargs.get("finger_print_parameters")
+        self.use_fingerprint = kwargs.get("use_fingerprint")
+        self.fingerprint_type = kwargs.get("fingerprint_type")
+        self.fingerprint_parameters = kwargs.get("fingerprint_parameters")
         self.aggregation_type = kwargs.get("aggregation_type")
         self.aggregation_parameters = kwargs.get("aggregation_parameters")
         self.fully_connected_sizes = kwargs.get("fully_connected_sizes")
@@ -67,6 +68,9 @@ class Trainer:
         # Create the deep learning model
         self.classification_tensor, self.softmax_tensor = create_deep_learning_model(
             inputs=self.sequence_data_placeholder,
+            use_fingerprint=self.use_fingerprint,
+            aggregation_type=self.aggregation_type,
+            aggregation_parameters=self.aggregation_parameters,
             fully_connected_sizes=self.fully_connected_sizes,
             scaler=self.scaler,
             num_classes=self.num_classes)
@@ -90,24 +94,25 @@ class Trainer:
         """
         # Raw parameters for model information storage
         params = ""
-        if self.finger_print_type:
-
-            if self.finger_print_type == "morgan":
+        if self.use_fingerprint and self.fingerprint_type:
+            if self.fingerprint_type == "morgan":
                 params += "MORGAN("
-                params += f"{self.finger_print_parameters['radius']}-"
-                params += f"{self.finger_print_parameters['size']}"
-                params += "-CHIR" if self.finger_print_parameters['use_chirality'] else ""
-                params += "-BT" if self.finger_print_parameters['use_bond_types'] else ""
-                params += "-FEAT" if self.finger_print_parameters['use_features'] else ""
+                params += f"{self.fingerprint_parameters['radius']}-"
+                params += f"{self.fingerprint_parameters['size']}"
+                params += "-CHIR" if self.fingerprint_parameters['use_chirality'] else ""
+                params += "-BT" if self.fingerprint_parameters['use_bond_types'] else ""
+                params += "-FEAT" if self.fingerprint_parameters['use_features'] else ""
                 params += ")-"
+        else:
+            params += "NAIVE-"
 
         # TODO ADD type of preprocessing that will be used ( either naive or expert systems )
 
         aggregation_name = ""
-        if self.aggregation_type:
+        if self.aggregation_type and not self.use_fingerprint:
             aggregation_name = str(self.aggregation_type.upper()) + (
-                "_" + "_".join([f"({value})" for value in self.aggregation_parameters.values()])
-                if self.aggregation_type not in ["mean", "max"] else "") + "_"
+                    "_" + "_".join([f"({value})" for value in self.aggregation_parameters.values()]))
+            aggregation_name+='-'
 
         raw_parameters = (params + aggregation_name + '_'.join(map(str, self.fully_connected_sizes)))
 
@@ -150,8 +155,10 @@ class Trainer:
         sequence_input_shape = None
 
         # Define sequence input shape and output shape
-        if self.finger_print_type == "morgan":
-            sequence_input_shape = [None, self.finger_print_parameters['size']]
+        if self.use_fingerprint and self.fingerprint_type == "morgan":
+            sequence_input_shape = [None, self.fingerprint_parameters['size']]
+        else:
+            sequence_input_shape = [None, len(get_naive_encoder())]
 
         sequence_output_shape = [1, self.num_classes]
 
@@ -215,26 +222,28 @@ class Trainer:
                 # Get Training and validation data
                 (sequence_label, sequence_id, sequence_name, sequence_data) = prepare_data(data=training_data,
                                                                                            num_classes=self.num_classes,
-                                                                                           fingerprint_type=self.finger_print_type,
-                                                                                           **self.finger_print_parameters)
+                                                                                           use_fingerprint=self.use_fingerprint,
+                                                                                           fingerprint_type=self.fingerprint_type,
+                                                                                           **self.fingerprint_parameters)
 
                 (valid_sequence_label, valid_sequence_id, valid_sequence_name, valid_sequence_data) = prepare_data(
                     data=validation_data,
                     num_classes=self.num_classes,
-                    fingerprint_type=self.finger_print_type,
-                    **self.finger_print_parameters)
+                    use_fingerprint=self.use_fingerprint,
+                    fingerprint_type=self.fingerprint_type,
+                    **self.fingerprint_parameters)
 
                 # Launch one forward and backward pass
                 (_, training_loss, training_softmax, training_accuracy, training_summary,) = self.session.run(
                     [self.training_step, self.cross_entropy_loss, self.softmax_tensor, self.accuracy_tensor,
                      merged_summary_tensor],
-                    feed_dict={self.sequence_data_placeholder: [sequence_data],
+                    feed_dict={self.sequence_data_placeholder: sequence_data,
                                self.sequence_label_placeholder: [sequence_label]})
 
                 # Run the Neural Network for Validation
                 (validation_loss, validation_softmax, validation_accuracy, validation_summary,) = self.session.run(
                     [self.cross_entropy_loss, self.softmax_tensor, self.accuracy_tensor, merged_summary_tensor],
-                    feed_dict={self.sequence_data_placeholder: [valid_sequence_data],
+                    feed_dict={self.sequence_data_placeholder: valid_sequence_data,
                                self.sequence_label_placeholder: [valid_sequence_label]})
 
                 # Update trackers
@@ -274,6 +283,7 @@ class Trainer:
                                              saver=self.saver, session=self.session, weight_path=self.weightPath)
 
             except:
+                raise
                 manage_error_during_training(iteration=occ, message="\nUnknown Error During Training",
                                              saver=self.saver, session=self.session, weight_path=self.weightPath)
 
@@ -306,11 +316,12 @@ class Trainer:
 
             (sequence_label, sequence_id, sequence_name, sequence_data) = prepare_data(data=test_data,
                                                                                        num_classes=self.num_classes,
-                                                                                       fingerprint_type=self.finger_print_type,
-                                                                                       **self.finger_print_parameters)
+                                                                                       use_fingerprint=self.use_fingerprint,
+                                                                                       fingerprint_type=self.fingerprint_type,
+                                                                                       **self.fingerprint_parameters)
             # launch inference
             softmax, accuracy = self.session.run([self.softmax_tensor, self.accuracy_tensor],
-                                                 feed_dict={self.sequence_data_placeholder: [sequence_data],
+                                                 feed_dict={self.sequence_data_placeholder: sequence_data,
                                                             self.sequence_label_placeholder: [sequence_label]})
 
             test_accuracy += accuracy

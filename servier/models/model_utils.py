@@ -35,10 +35,119 @@ def bias_variables(shape, identifier, trainable=True):
     return tf.Variable(initial, trainable=trainable, name=identifier)
 
 
-def create_deep_learning_model(inputs, fully_connected_sizes, scaler, num_classes=None):
+def apply_aggregating_squeeze_and_excite(inputs, number_of_matrices):
+    """
+    This creates and runs the aggregating Squeeze and excite layers
+    :param inputs: (N,number_hidden_units) input tensor to apply the operations to
+    :param number_of_matrices: Number of matrices to use to compute the weights
+    :return: (H.W,) tensor
+    :rtype: (Tensor)
+    """
+
+    size = inputs.get_shape()[-1]
+
+    # create matrices
+    weight_matrices_and_nonlin = create_weight_matrices_and_associated_nonlin(number_of_matrices=number_of_matrices,
+                                                                              size=size)
+    # apply matrices
+    tensor_of_weights = apply_weight_matrices_to_make_tensor_of_weights(inputs, weight_matrices_and_nonlin)
+
+    # use tensor as weights for averaging
+    return tf.expand_dims(tf.reduce_mean(tf.multiply(inputs, tensor_of_weights), axis=0), axis=0)
+
+
+def apply_weight_matrices_to_make_tensor_of_weights(reshaped_input, weight_matrices_and_nonlin):
+    """Compute the matrix multiplications and applies the non-linearities in order to produce a learned tensor of weights
+
+    :param reshaped_input: Reshaped and averaged input tensor, of shape (N, H.W)
+    :param weight_matrices_and_nonlin: List of matrices and non-linearities to use
+    :return: Tensor of weights, of shape (N, 1)
+    """
+    tensor_of_weights = reshaped_input
+    for (weight_matrix, non_linearity) in weight_matrices_and_nonlin:
+        tensor_of_weights = non_linearity(tf.matmul(tensor_of_weights, weight_matrix))
+
+    return tensor_of_weights
+
+
+def create_weight_matrices_and_associated_nonlin(number_of_matrices, size):
+    """Creates a given number of learnable matrices and associate a non-linearity function at each
+    :param number_of_matrices: Number of matrices to create
+    :param size: size of the first dimension of the first matrix
+    :return: List of learnable matrices and their non-linearity function
+    """
+    weight_matrices_and_nonlin = []
+    matrices_sizes = get_matrices_sizes(number_of_matrices, size)
+
+    current_size = size
+
+    for i, new_size in enumerate(reversed(matrices_sizes)):
+        identifier = f"Aggregation-Squeeze-Matrix-{i + 1}-of-shape-{current_size}-{new_size}"
+        matrix = weight_variables(shape=(current_size, new_size), identifier=identifier, trainable=True)
+
+        # As in normal Squeeze and excite, last non lin is a sigmoid
+        non_linearity = tf.nn.relu
+        if i == number_of_matrices - 1:
+            non_linearity = tf.sigmoid
+
+        weight_matrices_and_nonlin.append((matrix, non_linearity))
+        current_size = new_size
+
+    return weight_matrices_and_nonlin
+
+
+def get_matrices_sizes(number_of_matrices, max_size):
+    """Gets a linearly distributed list of matrix sizes
+
+    :param number_of_matrices: Number of matrix wanted
+    :param max_size: Maximum size of the matrix
+    :return: List of matrices' upper sizes
+    """
+    return np.linspace(1, max_size, number_of_matrices, endpoint=False, dtype=int)
+
+
+def apply_blstm_layers(inputs, number_of_hidden_units, number_of_layers, number_of_matrices):
+    """This creates and runs BLSTM layers over the given inputs.
+
+    :param inputs: (Tensor) Input Tensor to apply the BLSTM layers to.
+    :param number_of_hidden_units: (int) Number of hidden units of each internal layer of the BLSTM
+    :param number_of_layers: (int) Number of BLSTM layers
+    :param number_of_matrices: (int) Number of matrices to apply squeeze and excite layers
+    :return: (Tensor) The input tensors to which the BLSTM was applied.
+    """
+    # Import that allows usage of stackable bidirectional blstm layers
+    from models.stack_bidirection_layers_functions import stack_bidirectional_dynamic_rnn
+
+    # First we are going to create the forward and backward cells for each vertical layer
+    forward_pass_cells = [tf.compat.v1.nn.rnn_cell.LSTMCell(num_units=number_of_hidden_units, use_peepholes=True)
+                          for _ in range(number_of_layers)]
+    backward_pass_cells = [tf.compat.v1.nn.rnn_cell.LSTMCell(num_units=number_of_hidden_units, use_peepholes=True)
+                           for _ in range(number_of_layers)]
+
+    # Once the forward and backward cells have been created we stack the LSTM layers
+    outputs, _, _ = stack_bidirectional_dynamic_rnn(
+        cells_fw=forward_pass_cells,
+        cells_bw=backward_pass_cells,
+        inputs=inputs,
+        dtype=tf.float32)
+
+    if number_of_matrices:
+        outputs = apply_aggregating_squeeze_and_excite(inputs=outputs[0],number_of_matrices=number_of_matrices)
+    else:
+        # Used To Resize To A Single Array Input
+        outputs = tf.reshape(outputs[-1][-1], [-1, 2 * number_of_hidden_units])
+
+    return outputs
+
+
+def create_deep_learning_model(inputs, use_fingerprint, aggregation_type, aggregation_parameters, fully_connected_sizes,
+                               scaler, num_classes=None):
     """
     Function that creates that deep learning model that will be used for the classification task
     :param inputs: (Tensor) input tensor
+    :param use_fingerprint: (bool) element that indicates that we are using a naive string
+    :param aggregation_type: (str) string specify the aggregation type that is being used
+    :param aggregation_parameters: (dict) dictionary containing aggregation types that we are using
     :param fully_connected_sizes: (Tensor) List containing sizes of the fully connected layers
     :param scaler: (Tensor) scaling Tensor of softmax input
     :param num_classes: (int) number of classes that we are interested in.
@@ -46,6 +155,13 @@ def create_deep_learning_model(inputs, fully_connected_sizes, scaler, num_classe
     """
 
     model_outputs = inputs
+
+    # If we are not using fingerprints, we are using the naive approach
+    if not use_fingerprint:
+        with tf.name_scope("Input-Aggregation-Layers"):
+            if aggregation_type == "blstm":
+                model_outputs = tf.expand_dims(input=model_outputs, axis=0)
+                model_outputs = apply_blstm_layers(inputs=model_outputs, **aggregation_parameters)
 
     for matrix_index, matrix_neural_size in enumerate(fully_connected_sizes):
         with tf.name_scope(f"Fully-Connected-Layer-{matrix_index + 1}"):

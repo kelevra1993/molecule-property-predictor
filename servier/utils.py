@@ -25,9 +25,9 @@ def format_configuration_variables(config):
         "field_delimiter": config["data"]["field_delimiter"],
         "label_dictionary": config["data"]["label_dictionary"],
         "num_classes": len(config["data"]["label_dictionary"]),
-        "use_finger_print": config["fingerprint"]["activated"],
-        "finger_print_type": config["fingerprint"]["type"],
-        "finger_print_parameters": config["fingerprint"]["parameters"][config["fingerprint"]["type"]] if
+        "use_fingerprint": config["fingerprint"]["activated"],
+        "fingerprint_type": config["fingerprint"]["type"],
+        "fingerprint_parameters": config["fingerprint"]["parameters"][config["fingerprint"]["type"]] if
         config["fingerprint"]["type"] in ["morgan"] else {},
         "aggregation_type": config["model"]["aggregation"]["type"],
         "aggregation_parameters": config["model"]["aggregation"]["parameters"][
@@ -143,14 +143,18 @@ def get_new_figure(figure_title, figure_size=None):
 
 def configure_cell_text_and_colors(array_dataframe, line, column, CellText, facecolors, posi, font_size, total_values):
     """
-    :param array_dataframe:
-    :param line:
-    :param column:
-    :param CellText:
-    :param facecolors:
-    :param posi:
-    :param font_size:
-    :return:
+    Configure cell text and colors for a heatmap cell.
+    :param array_dataframe: (DataFrame) The input DataFrame.
+    :param line: (int) The row index of the cell.
+    :param column: (int) The column index of the cell.
+    :param CellText: (str) The text associated with the cell.
+    :param facecolors: The facecolors of the cells.
+    :param posi: The position index.
+    :param font_size: (int) The font size.
+    :param total_values: (int) The total number of values.
+    :return: (list, list) A tuple containing two lists:
+             - A list of text elements to add.
+             - A list of text elements to delete.
     """
     text_to_add = []
     text_to_delete = []
@@ -187,12 +191,7 @@ def configure_cell_text_and_colors(array_dataframe, line, column, CellText, face
         font_prop = matplotlib.font_manager.FontProperties(weight="bold", size=font_size)
 
         text_kwargs = dict(
-            color=[0.7059, 0.7451, 0.9412, 1.0],
-            ha="center",
-            va="center",
-            gid="sum",
-            fontproperties=font_prop,
-        )
+            color=[0.7059, 0.7451, 0.9412, 1.0], ha="center", va="center", gid="sum", fontproperties=font_prop )
 
         lis_txt = ["%d " % (cell_value), per_ok_s]
         lis_kwa = [text_kwargs]
@@ -204,9 +203,7 @@ def configure_cell_text_and_colors(array_dataframe, line, column, CellText, face
         lis_pos = [(CellText._x, CellText._y - 0.11), (CellText._x, CellText._y + 0.11)]
 
         for i in range(len(lis_txt)):
-            newText = dict(
-                x=lis_pos[i][0], y=lis_pos[i][1], text=lis_txt[i], kw=lis_kwa[i]
-            )
+            newText = dict(x=lis_pos[i][0], y=lis_pos[i][1], text=lis_txt[i], kw=lis_kwa[i])
             text_to_add.append(newText)
 
         # set background color for sum cells (last line and last column)
