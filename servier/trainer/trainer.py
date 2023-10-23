@@ -181,7 +181,7 @@ class Trainer:
         # Setting Up Tensorboard
         merged_summary_tensor, train_file_writer, validation_file_writer = setup_tensorboard(
             loss=self.cross_entropy_loss,
-            accuracy=self.cross_entropy_loss,
+            accuracy=self.accuracy_tensor,
             session=self.session,
             tensorboard_path=self.tensorboardPath)
 
@@ -274,7 +274,6 @@ class Trainer:
                                              saver=self.saver, session=self.session, weight_path=self.weightPath)
 
             except:
-                raise
                 manage_error_during_training(iteration=occ, message="\nUnknown Error During Training",
                                              saver=self.saver, session=self.session, weight_path=self.weightPath)
 
@@ -342,8 +341,11 @@ class Trainer:
         message_list = []
         message_list.append("\n" + 50 * "-")
         message_list.append(f"Model Iteration {iteration} Global Accuracy : {np.round(test_accuracy, 2)}%")
+        class_recalls = []
         for k, v in correctly_predicted_dictionary.items():
             message_list.append(f"Recall On {k} Class Is : {np.round(100 * (v / counter_dictionary[k]), 2)}%")
+            class_recalls.append(100 * v / counter_dictionary[k])
+        message_list.append(f"Average Recall On Both Classes Is {np.round(np.mean(class_recalls), 2)}%")
         message_list.append(50 * "-")
 
         if inference_during_training:

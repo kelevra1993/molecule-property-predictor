@@ -62,11 +62,11 @@ model:
 training:
     settings:
         # Number of iterations after which we save a model and run inference on the whole validation dataset
-        weight_saver: 200
+        weight_saver: 500
         # Number of iterations before output to Terminal
-        info_dump: 100
+        info_dump: 250
         # Number of iterations that will be ran
-        num_iterations: 50000
+        num_iterations: 25000
     hyperparameters:
         # Learning rate. Can either be a float (0.001) or a string with the format xe-y
         learning_rate: 2e-4

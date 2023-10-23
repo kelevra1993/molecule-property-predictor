@@ -55,8 +55,11 @@ def load_configuration_variables(experiment_name="project_config.example.yml"):
     setup_file = os.path.join(dental_mind_folder, "config", experiment_name)
 
     # Load project configuration variables
-    project_configuration_variables = format_configuration_variables(yaml.safe_load(open(setup_file, 'r')))
-
+    try:
+        project_configuration_variables = format_configuration_variables(yaml.safe_load(open(setup_file, 'r')))
+    except:
+        print_red(f"This Configuration File {setup_file} Does Not Exist ")
+        exit()
     return project_configuration_variables
 
 
