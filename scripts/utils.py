@@ -39,6 +39,21 @@ def get_train_validation_test_dataframes(total_dataframe):
     return training_dataframe, balanced_training_dataframe, validation_data_frame, test_data_frame
 
 
+def get_multi_train_validation_test_dataframes(total_dataframe):
+    """
+    Splits the total DataFrame into training, validation, and test DataFrames and balances the training data.
+    :param total_dataframe: (DataFrame) The total input DataFrame to be split into training, validation, and test sets.
+    :return: (DataFrame, DataFrame, DataFrame, DataFrame) A tuple containing four DataFrames:
+             - The training DataFrame.
+             - The validation DataFrame.
+             - The test DataFrame.
+    """
+    training_dataframe, validation_test_data_frame = split_dataframe_by_percentage(total_dataframe, percent=80)
+    validation_data_frame, test_data_frame = split_dataframe_by_percentage(validation_test_data_frame, percent=50)
+
+    return training_dataframe, validation_data_frame, test_data_frame
+
+
 def balance_dataframe(dataframe, column_name):
     """
     Balances a DataFrame by duplicating rows corresponding to the minority class in a specified column.

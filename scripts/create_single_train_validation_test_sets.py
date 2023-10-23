@@ -1,4 +1,5 @@
-# This is the file that will be used in order to create the training,validation and test database.
+# This is the file that will be used in order to create the training,validation and test database
+# for single property prediction
 import os
 import pandas as pd
 from utils import get_train_validation_test_dataframes
