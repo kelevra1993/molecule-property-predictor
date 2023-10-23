@@ -51,10 +51,7 @@ model:
             blstm:
                 number_of_hidden_units: 100
                 number_of_layers: 2
-
-            # Squeeze And Excite Parameters
-            squeeze-and-excite:
-                number_of_matrices: 3
+                number_of_matrices: 4
 
 ##############################################################################################
 #                                          Training                                          #
