@@ -7,7 +7,7 @@ import numpy as np
 from tqdm import tqdm
 import tensorflow as tf
 
-from utils import (make_dir, print_green, safe_dump, print_yellow,
+from utils import (make_dir, print_green, safe_dump, print_yellow, print_red,
                    print_blue, print_bold, plot_and_save_confusion_matrix)
 from data_manager.data_utils import (get_model_placeholders, create_input_producer,
                                      count_records, prepare_data, dump_info, get_naive_encoder)
@@ -114,6 +114,11 @@ class Trainer:
                 params += ")-"
         else:
             params += "NAIVE-"
+
+        if not self.use_fingerprint and not self.aggregation_type:
+            print_red("Since you are not using fingerprint, please specify the type of aggregator to use")
+            print_red("This is done in your configuration file under aggregation > type ")
+            exit()
 
         aggregation_name = ""
         if self.aggregation_type and not self.use_fingerprint:
@@ -327,6 +332,7 @@ class Trainer:
                                              saver=self.saver, session=self.session, weight_path=self.weight_path)
 
             except:
+                raise
                 manage_error_during_training(iteration=occ, message="\nUnknown Error During Training",
                                              saver=self.saver, session=self.session, weight_path=self.weight_path)
 
