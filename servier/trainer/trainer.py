@@ -46,8 +46,6 @@ class Trainer:
         self.info_dump = kwargs.get("info_dump")
         self.num_iterations = kwargs.get("num_iterations")
         self.learning_rate = kwargs.get("learning_rate")
-        self.index_iteration = kwargs.get("index_iteration")
-        self.scaler = kwargs.get("scaler")
         self.training_variables = kwargs
 
         # Setting up csv column defaults, that define types for each column
@@ -76,7 +74,6 @@ class Trainer:
             aggregation_type=self.aggregation_type,
             aggregation_parameters=self.aggregation_parameters,
             fully_connected_sizes=self.fully_connected_sizes,
-            scaler=self.scaler,
             num_classes=self.num_classes)
 
         # Get outputs as well as optimizers
@@ -241,8 +238,7 @@ class Trainer:
         # Restore the last model used for training
         iteration_last_model = restore_last_model(path=self.weight_path,
                                                   session=self.session,
-                                                  saver=self.saver,
-                                                  last=True)
+                                                  saver=self.saver)
 
         # Running our data pipeline initializers
         self.session.run([train_initializer, validation_initializer, test_initializer])
@@ -309,7 +305,7 @@ class Trainer:
                                                                     info_dump=self.info_dump)
                 # Launching evaluation on test dataset
                 if occ % self.weight_saver == 0:
-                    self.launch_evaluation(
+                    self.launch_evaluation_on_single_model(
                         iteration=occ,
                         test_iterations=test_iterations,
                         test_data_tensor=test_data_tensor,
@@ -327,17 +323,51 @@ class Trainer:
                 validation_file_writer.add_summary(validation_summary, occ)
 
             except KeyboardInterrupt:
-
+                # Save the model then stop the script
                 manage_error_during_training(iteration=occ, message="\nTraining Was Abruptly Interrupted",
                                              saver=self.saver, session=self.session, weight_path=self.weight_path)
 
             except:
-                raise
+                # Save the model then stop the script
                 manage_error_during_training(iteration=occ, message="\nUnknown Error During Training",
                                              saver=self.saver, session=self.session, weight_path=self.weight_path)
+                raise
 
-    def launch_evaluation(self, iteration, test_iterations, test_data_tensor, results_folder_path,
-                          inference_during_training=False, result_evaluation_file=None):
+    def evaluate(self, iteration):
+
+        # Evaluation Data Pipeline Parameters
+        test_initializer, test_data_tensor = create_input_producer(csv_file=self.test_csv_file,
+                                                                   column_defaults=self.column_defaults,
+                                                                   name_scope="Test-Batch",
+                                                                   field_delimiter=self.field_delimiter)
+
+        # Initialize tensorflow variables and get number of element in testing database
+        test_iterations = self.initialize_tensorflow_variables_and_print_summary(training=False)
+
+        # Restore the specific model that interests us the most
+        iteration_last_model = restore_last_model(path=self.weight_path,
+                                                  session=self.session,
+                                                  saver=self.saver,
+                                                  index_iteration=iteration)
+
+        # Running our data pipeline initializer
+        self.session.run([test_initializer])
+
+        # Set Result Folder path for evaluation
+        self.result_path = os.path.join(os.path.dirname(self.result_path),
+                                        f"Evaluation-{os.path.basename(self.result_path)}")
+        make_dir(self.result_path)
+
+        self.launch_evaluation_on_single_model(
+            iteration=iteration,
+            test_iterations=test_iterations,
+            test_data_tensor=test_data_tensor,
+            results_folder_path=self.result_path,
+            inference_during_training=False,
+            result_evaluation_file=None)
+
+    def launch_evaluation_on_single_model(self, iteration, test_iterations, test_data_tensor, results_folder_path,
+                                          inference_during_training=False, result_evaluation_file=None):
         """
         Function that launches evaluation on the test set or any given set during training and evaluation phase
         :param iteration: (int) iteration of the model that is of interest
@@ -439,8 +469,7 @@ class Trainer:
                   data_dictionary=data_dictionary,
                   counter_dictionary=counter_dictionary,
                   template_path=self.template_path,
-                  output_file=os.path.join(iteration_result_folder, f"Results_{iteration}.xlsx"),
-                  scaler=self.scaler)
+                  output_file=os.path.join(iteration_result_folder, f"Results_{iteration}.xlsx"))
 
         # Plot And Save Confusion Matrix
         plot_and_save_confusion_matrix(
@@ -585,9 +614,10 @@ class Trainer:
 
         return message_list
 
-    def initialize_tensorflow_variables_and_print_summary(self):
+    def initialize_tensorflow_variables_and_print_summary(self, training=True):
         """
         Function that initializes tensorflow variables and prints out a summary
+        :param: training (boolean) variable that indicates that we are in the training phase
         :return: test_iterations (int) number of elements in our test dataset
         """
         self.session.run(tf.compat.v1.global_variables_initializer())
@@ -600,7 +630,8 @@ class Trainer:
         print_green(f"There are {test_iterations} Smile String Sequences In Our Test Dataset")
 
         print(f"\nModel File : {self.raw_parameters}\n")
-        print(f"Number Of Training Iterations : {self.num_iterations}")
+        if training:
+            print(f"Number Of Training Iterations : {self.num_iterations}")
         print(f"Number Of Validation Iterations : {test_iterations} \n")
 
         print_model_size()

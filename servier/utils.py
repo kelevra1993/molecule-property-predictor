@@ -39,8 +39,6 @@ def format_configuration_variables(config):
         "info_dump": config["training"]["settings"]["info_dump"],
         "num_iterations": config["training"]["settings"]["num_iterations"],
         "learning_rate": float(config["training"]["hyperparameters"]["learning_rate"]),
-        "index_iteration": config["inference"]["index_iteration"],
-        "scaler": config["inference"]["scaler"]
     }
     return project_configuration_variables
 

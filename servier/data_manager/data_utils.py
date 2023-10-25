@@ -221,7 +221,7 @@ def prepare_data(data,
     return label, id, smile_string, processed_smile_string_input
 
 
-def dump_info(label_dictionary, data_dictionary, counter_dictionary, output_file, template_path, scaler):
+def dump_info(label_dictionary, data_dictionary, counter_dictionary, output_file, template_path):
     """
     Function that dumps metric information into an excel file for analysis
     :param label_dictionary: (dict)project label dictionary
@@ -254,7 +254,7 @@ def dump_info(label_dictionary, data_dictionary, counter_dictionary, output_file
             sheet["B" + str(index + 2)].value = info[1]
             sheet["C" + str(index + 2)].value = info[2]
 
-        sheet["D" + str(2)].value = str(scaler) if scaler else "1.0"
+        sheet["D" + str(2)].value = "0.5"
         sheet["D" + str(51)].value = counter_dictionary[k]
 
     # Computation of Specificity which is equal to TN/(TN+FP)
