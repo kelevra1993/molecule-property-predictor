@@ -1,6 +1,7 @@
 import os
 import json
 import yaml
+import argparse
 import matplotlib
 
 matplotlib.use("Agg")
@@ -333,9 +334,11 @@ def plot_and_save_confusion_matrix(confusion_matrix, model_iteration, iteration_
     # Link :https://github.com/wcipriano/pretty-print-confusion-matrix
 
     Function that plots and saves the confusion matrix of a given iteration
+    :param label_dictionary:
     :param confusion_matrix: np.array -> our confusion matrix
     :param model_iteration: index / iteration of the model
     :param iteration_result_folder: path to model's result folder
+    :param label_dictionary: (dict) dictionary containing the labels of interest
     :return: save a png confusion matrix
     """
     # Get Pandas Data Frame
@@ -350,3 +353,25 @@ def plot_and_save_confusion_matrix(confusion_matrix, model_iteration, iteration_
         figure_size=[num_classes + 5, num_classes + 5],
         model_iteration=model_iteration,
         iteration_result_folder=iteration_result_folder)
+
+
+def parse_arguments_and_get_trainer_parameters():
+    # Parse Arguments
+    parser = argparse.ArgumentParser()
+
+    # Getting project parameters
+    parser.add_argument("--config", type=str, default='project_config.example.yml',
+                        help='name of configuration file that will be used')
+    parser.add_argument("--index", type=int, default=0,
+                        help='model index iteration that we would like to use')
+
+    parsed_arguments, un_parsed_arguments = parser.parse_known_args()
+
+    if not parsed_arguments.index:
+        print_red("Please Specify The Iteration Of The Model You Would Like To Use")
+        print_green("This is done by specifying --index=xxx")
+        exit()
+
+    project_variables = load_configuration_variables(parsed_arguments.config)
+
+    return project_variables, parsed_arguments.index

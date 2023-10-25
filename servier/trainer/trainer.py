@@ -371,16 +371,27 @@ class Trainer:
             result_evaluation_file=None)
 
     def predict(self, iteration, smile_string):
+        """
+        Function that is used to launch prediction on a single smile string sequence.
+        :param iteration: (int) iteration of the model that is of interest to the user
+        :param smile_string: (str) smile string of the molecule that is of interest to the user
+        :return:
+        """
 
-        # initializing prediction variables
-        self.session.run(tf.compat.v1.global_variables_initializer())
-        self.session.run(tf.compat.v1.local_variables_initializer())
+        # Initialise tensors and restore model that is going to be used
+        self.load_and_restore_model(iteration=iteration)
 
-        # Restore the specific model that interests us the most
-        _ = restore_last_model(path=self.weight_path,
-                               session=self.session,
-                               saver=self.saver,
-                               index_iteration=iteration)
+        # Preprocess Data And Launch Prediction
+        prediction = self.predict_on_single_smile_string(smile_string)
+
+        return prediction
+
+    def predict_on_single_smile_string(self, smile_string):
+        """
+        Function used to do prediction on a single smile string
+        :param smile_string:
+        :return: (str) smile string of the molecule that is of interest to the user
+        """
 
         # Preprocess Data
         sequence_data = preprocess_string(
@@ -395,7 +406,6 @@ class Trainer:
                                                                    })
 
         if self.multiple_property_prediction:
-
             prediction_dictionary = {}
             for sample_index, sample_column in enumerate(["P2", "P1", "P3", "P4", "P5", "P6", "P7", "P8", "P9"]):
                 predicted_index = np.argmax(softmax[sample_index], 0)
@@ -517,6 +527,22 @@ class Trainer:
             confusion_matrix=confusion_matrix,
             model_iteration=iteration,
             iteration_result_folder=iteration_result_folder)
+
+    def load_and_restore_model(self, iteration):
+        """
+        Function that initializes the session variables and restore the desired model
+        :param iteration: (int) iteration of the model that is of interest
+        :return:
+        """
+        # initializing prediction variables
+        self.session.run(tf.compat.v1.global_variables_initializer())
+        self.session.run(tf.compat.v1.local_variables_initializer())
+
+        # Restore the specific model that interests us the most
+        _ = restore_last_model(path=self.weight_path,
+                               session=self.session,
+                               saver=self.saver,
+                               index_iteration=iteration)
 
     @staticmethod
     def get_trackers():

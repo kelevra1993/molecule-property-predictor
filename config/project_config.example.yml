@@ -71,14 +71,3 @@ training:
     hyperparameters:
         # Learning rate. Can either be a float (0.001) or a string with the format xe-y
         learning_rate: 2e-4
-
-##############################################################################################
-#                                          Inference                                         #
-##############################################################################################
-inference:
-    # Index of the model iteration that will be used for inference,
-    # by default if it is set to None evaluation will be done on all models
-    index_iteration: None
-
-    # Choice to scale results that are fed to the softmax function
-    scaler: null
