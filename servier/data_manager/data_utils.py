@@ -198,7 +198,7 @@ def prepare_data(data,
 
     if multiple_property_prediction:
         label = np.array([create_one_hot_vector(index=int(data[column]), num_classes=num_classes) for column in
-                 range(number_of_prediction_columns)])
+                          range(number_of_prediction_columns)])
     else:
         label = create_one_hot_vector(index=int(data[0]), num_classes=num_classes)
 
@@ -219,6 +219,31 @@ def prepare_data(data,
         processed_smile_string_input = np.array([naive_encoder(character) for character in smile_string])
 
     return label, id, smile_string, processed_smile_string_input
+
+
+def preprocess_string(use_fingerprint, fingerprint_type, smile_string, **kwargs):
+    """
+    Function that preprocesses a single smile string based on the type of preprocessing specified by the user
+    :param use_fingerprint: (boolean) choice to use a fingerprint for preprocessing
+    :param fingerprint_type: (str) type of preprocessing that we would like to use
+    :param smile_string: (str) molecule smile string of which we would like to predict given properties
+    :param kwargs: (dict) dictionary containing fingerprint parameters
+    :return:
+    """
+    if fingerprint_type == "morgan" and use_fingerprint:
+        smile_string_fingerprint = fingerprint_features(smile_string,
+                                                        radius=kwargs.get("radius"),
+                                                        size=kwargs.get("size"),
+                                                        use_chirality=kwargs.get("use_chirality"),
+                                                        use_bond_types=kwargs.get("use_bond_types"),
+                                                        use_features=kwargs.get("use_features"))
+
+        processed_smile_string_input = np.array([int(i) for i in smile_string_fingerprint.ToBitString()])
+        processed_smile_string_input = np.expand_dims(processed_smile_string_input, 0)
+    else:
+        processed_smile_string_input = np.array([naive_encoder(character) for character in smile_string])
+
+    return processed_smile_string_input
 
 
 def dump_info(label_dictionary, data_dictionary, counter_dictionary, output_file, template_path):

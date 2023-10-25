@@ -21,15 +21,13 @@ def main(configuration_file, train_mode, evaluate_mode, predict_mode, model_iter
 
     if train_mode:
         trainer_object.train()
-        pass
 
     if evaluate_mode:
         trainer_object.evaluate(iteration=model_iteration)
-        pass
 
     if predict_mode:
-        # do prediction
-        pass
+        prediction = trainer_object.predict(iteration=model_iteration, smile_string=smile_string)
+        print(prediction)
 
     return None
 
@@ -48,6 +46,8 @@ if __name__ == "__main__":
                         help='Boolean that indicates that we are launching prediction')
     parser.add_argument("--index", type=int, default=0,
                         help='model index iteration that we would like to use')
+    parser.add_argument("--smile", type=str, default='',
+                        help='smile string that we would like to predict')
 
     parsed_arguments, un_parsed_arguments = parser.parse_known_args()
 
@@ -68,9 +68,12 @@ if __name__ == "__main__":
             print_green("This is done by specifying --index=xxx")
             exit()
 
-    # TODO In case of prediction make sure that a smile string has been given
+    # In case of prediction make sure that a smile string has been given
     if parsed_arguments.predict:
-        exit()
+        if not parsed_arguments.smile:
+            print_red("Please Specify A Smile String Of A Molecule That You Would Like To Predict The Properties")
+            print_green("This is done by specifying --smile=xxx")
+            exit()
 
     # Run the main function
     main(configuration_file=parsed_arguments.config,
@@ -78,4 +81,4 @@ if __name__ == "__main__":
          evaluate_mode=parsed_arguments.evaluate,
          predict_mode=parsed_arguments.predict,
          model_iteration=parsed_arguments.index,
-         smile_string=None)
+         smile_string=parsed_arguments.smile)

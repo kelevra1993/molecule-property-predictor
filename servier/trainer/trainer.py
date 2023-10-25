@@ -9,7 +9,7 @@ import tensorflow as tf
 
 from utils import (make_dir, print_green, safe_dump, print_yellow, print_red,
                    print_blue, print_bold, plot_and_save_confusion_matrix)
-from data_manager.data_utils import (get_model_placeholders, create_input_producer,
+from data_manager.data_utils import (get_model_placeholders, create_input_producer, preprocess_string,
                                      count_records, prepare_data, dump_info, get_naive_encoder)
 from models.model_utils import (create_deep_learning_model, postprocess, setup_tensorboard, print_model_size,
                                 restore_last_model, console_log_update_tracker, manage_error_during_training,
@@ -334,7 +334,11 @@ class Trainer:
                 raise
 
     def evaluate(self, iteration):
-
+        """
+        Function that is used to evaluate a model given a testing database.
+        :param iteration: (int) iteration that was saved during training and that is of interest to us.
+        :return:
+        """
         # Evaluation Data Pipeline Parameters
         test_initializer, test_data_tensor = create_input_producer(csv_file=self.test_csv_file,
                                                                    column_defaults=self.column_defaults,
@@ -345,10 +349,10 @@ class Trainer:
         test_iterations = self.initialize_tensorflow_variables_and_print_summary(training=False)
 
         # Restore the specific model that interests us the most
-        iteration_last_model = restore_last_model(path=self.weight_path,
-                                                  session=self.session,
-                                                  saver=self.saver,
-                                                  index_iteration=iteration)
+        _ = restore_last_model(path=self.weight_path,
+                               session=self.session,
+                               saver=self.saver,
+                               index_iteration=iteration)
 
         # Running our data pipeline initializer
         self.session.run([test_initializer])
@@ -365,6 +369,41 @@ class Trainer:
             results_folder_path=self.result_path,
             inference_during_training=False,
             result_evaluation_file=None)
+
+    def predict(self, iteration, smile_string):
+
+        # initializing prediction variables
+        self.session.run(tf.compat.v1.global_variables_initializer())
+        self.session.run(tf.compat.v1.local_variables_initializer())
+
+        # Restore the specific model that interests us the most
+        _ = restore_last_model(path=self.weight_path,
+                               session=self.session,
+                               saver=self.saver,
+                               index_iteration=iteration)
+
+        # Preprocess Data
+        sequence_data = preprocess_string(
+            use_fingerprint=self.use_fingerprint,
+            fingerprint_type=self.fingerprint_type,
+            smile_string=smile_string,
+            **self.fingerprint_parameters)
+
+        # Run Inference
+        # launch inference for the smile string
+        softmax = self.session.run(self.softmax_tensor, feed_dict={self.sequence_data_placeholder: sequence_data
+                                                                   })
+
+        if self.multiple_property_prediction:
+
+            prediction_dictionary = {}
+            for sample_index, sample_column in enumerate(["P2", "P1", "P3", "P4", "P5", "P6", "P7", "P8", "P9"]):
+                predicted_index = np.argmax(softmax[sample_index], 0)
+                prediction_dictionary[sample_column] = self.label_dictionary[predicted_index]
+            return prediction_dictionary
+        else:
+            predicted_index = np.argmax(softmax[0], 0)
+            return {"P1": self.label_dictionary[predicted_index]}
 
     def launch_evaluation_on_single_model(self, iteration, test_iterations, test_data_tensor, results_folder_path,
                                           inference_during_training=False, result_evaluation_file=None):
@@ -584,12 +623,13 @@ class Trainer:
                                          correctly_predicted_dictionary, multi_correctly_predicted_dictionary):
         """
 
-        :param iteration:
-        :param test_accuracy:
-        :param counter_dictionary:
-        :param multi_counter_dictionary:
-        :param correctly_predicted_dictionary:
-        :param multi_correctly_predicted_dictionary:
+        :param iteration: (int) iteration of the model that we are currently looking at
+        :param test_accuracy: (float) accuracy evaluated on the whole test dataset
+        :param counter_dictionary:(dict) dictionary containing number of samples per P1 property
+        :param correctly_predicted_dictionary: (dict) dictionary containing correct predictions per P1 property
+        :param multi_counter_dictionary: (dict) dictionary containing number of samples per property
+        :param multi_correctly_predicted_dictionary: (dict) dictionary containing correct predictions per property
+
         :return:
         """
         message_list = ["\n" + 50 * "-", f"Model Iteration {iteration} Global Accuracy : {np.round(test_accuracy, 2)}%"]
