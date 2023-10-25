@@ -142,7 +142,7 @@ def apply_blstm_layers(inputs, number_of_hidden_units, number_of_layers, number_
 
 def create_deep_learning_model(inputs, use_fingerprint, multiple_property_prediction, number_of_prediction_columns,
                                aggregation_type, aggregation_parameters, fully_connected_sizes,
-                               scaler, num_classes=None):
+                               scaler=0.5, num_classes=None):
     """
     Function that creates that deep learning model that will be used for the classification task
     :param inputs: (Tensor) input tensor
@@ -152,7 +152,7 @@ def create_deep_learning_model(inputs, use_fingerprint, multiple_property_predic
     :param aggregation_type: (str) string specify the aggregation type that is being used
     :param aggregation_parameters: (dict) dictionary containing aggregation types that we are using
     :param fully_connected_sizes: (Tensor) List containing sizes of the fully connected layers
-    :param scaler: (Tensor) scaling Tensor of softmax input
+    :param scaler: (float) scaling Tensor of softmax input
     :param num_classes: (int) number of classes that we are interested in.
     :return: classification (Tensor) , softmax (Tensor)
     """
@@ -195,9 +195,7 @@ def create_deep_learning_model(inputs, use_fingerprint, multiple_property_predic
             classification = tf.reshape(classification, [number_of_prediction_columns, num_classes])
 
     with tf.name_scope("Outputs"):
-        # Dealing with multiple property prediction
         # Scaling validation output to keep "dropout scaling coherence during training"
-
         if scaler:
             softmax = tf.nn.softmax(tf.multiply(classification, scaler),
                                     axis=1 if multiple_property_prediction else None, name="Softmax")
@@ -250,13 +248,14 @@ def setup_tensorboard(loss, accuracy, session, tensorboard_path):
     return merged_view, train_file_writer, validation_file_writer
 
 
-def restore_last_model(path, session, saver, index_iteration=None, last=True):
+def restore_last_model(path, session, saver, index_iteration=None):
     """
     Function that restores the last weights that were used during training for a given iteration
     or a desired index iteration
     :param path: (str) Path where weights are stored
+    :param session: (Tensor) Session Tensor
+    :param saver: (Tensor) Saver Tensor used to restore specific parameters
     :param index_iteration: (int) Option to get a model saved at a given iteration
-    :param last: (bool) Option to get the last saved model
     :return: (Tensor) returns the index of the last trained model
             If there is no model, we return 0
     """
@@ -264,24 +263,30 @@ def restore_last_model(path, session, saver, index_iteration=None, last=True):
     ckpt = tf.train.get_checkpoint_state(path, latest_filename="full-checkpoint")
     iteration_last_model = index_iteration if index_iteration else 0
 
-    if last:
+    if not iteration_last_model:
         try:
             last_model_path = ckpt.model_checkpoint_path
         except AttributeError:
             iteration_last_model = 0
             last_model_path = None
-        else:
-            iteration_last_model = int((last_model_path.split("_")[-1]).split(".")[0])
+    else:
+        last_model_path = os.path.join(path, "Iteration_%d" % (iteration_last_model))
 
-        if os.path.exists(str(last_model_path) + ".meta"):
-            print("We Found The Model : ", last_model_path)
-            print_yellow("Model weights are being restored.....")
-            saver.restore(session, last_model_path)
-            print_green("Model weights have been restored")
-        else:
-            print_red("No Initiation Model Weights Will Be Used...")
-            print_green("We generate A New Model That Will Be Trained From Scratch\n")
+    if last_model_path:
+        iteration_last_model = int((last_model_path.split("_")[-1]).split(".")[0])
 
+    if os.path.exists(str(last_model_path) + ".meta"):
+        print("We Found The Model :", last_model_path)
+        print_yellow("Model weights are being restored.....")
+        saver.restore(session, last_model_path)
+        print_green("Model weights have been restored")
+    else:
+        if index_iteration:
+            print_red(f"This Model Does Not Seem To Exist : {str(last_model_path)}.meta")
+            print_green(f"Either Iteration {index_iteration} Does Not Exist Or The Specified Configuration File Is False")
+            exit()
+        print_red("No Initiation Model Weights Will Be Used...")
+        print_green("We generate A New Model That Will Be Trained From Scratch\n")
     return iteration_last_model
 
 
@@ -341,7 +346,8 @@ def manage_error_during_training(iteration, message, saver, session, weight_path
     dump_in_checkpoint(weight_path, iteration)
     print_green("model has been saved successfully")
     session.close()
-    sys.exit()
+    if "Error" not in message:
+        sys.exit()
 
 
 def dump_in_checkpoint(path, model_iteration):
