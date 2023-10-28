@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  servier:
+    image: servier
+    container_name: servier_container
+    ports:
+      - "8080:5000"
+    volumes:
+      - ./config:/home/app/config
+      - ./data:/home/app/data
+      - ./trained_models:/home/app/trained_models
+    command: /bin/sh

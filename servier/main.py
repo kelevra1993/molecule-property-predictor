@@ -1,3 +1,4 @@
+import os
 import argparse
 from utils import load_configuration_variables, print_red, print_green
 from trainer.trainer import Trainer
@@ -14,7 +15,9 @@ def main(configuration_file, train_mode, evaluate_mode, predict_mode, model_iter
     :param smile_string: (str) molecule smile string of the user
     :return:
     """
-    project_configuration_variables = load_configuration_variables(experiment_name=configuration_file)
+    project_configuration_variables = load_configuration_variables(
+        application_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        experiment_name=configuration_file)
 
     # Feed Variables To Trainer Object
     trainer_object = Trainer(**project_configuration_variables)

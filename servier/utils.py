@@ -11,7 +11,7 @@ import seaborn as sn
 import matplotlib.pyplot as plt
 
 
-def format_configuration_variables(config):
+def format_configuration_variables(application_folder, config):
     """
     Formatting of configuration variables in a dictionary that can be passed to Trainer class, data preparation functions,
     project folder preparation function ...e.t.c.
@@ -19,10 +19,13 @@ def format_configuration_variables(config):
     :return:
     """
     project_configuration_variables = {
-        "PROJECT_FOLDER": config["folder_structure"]["project_folder"],
-        "train_csv_file": config["folder_structure"]["data_files"]["train"],
-        "valid_csv_file": config["folder_structure"]["data_files"]["validation"],
-        "test_csv_file": config["folder_structure"]["data_files"]["test"],
+        "PROJECT_FOLDER": os.path.join(application_folder, "trained_models",
+                                       config["folder_structure"]["project_folder"]),
+        "train_csv_file": os.path.join(application_folder, "data",
+                                       config["folder_structure"]["data_files"]["train"]),
+        "valid_csv_file": os.path.join(application_folder, "data",
+                                       config["folder_structure"]["data_files"]["validation"]),
+        "test_csv_file": os.path.join(application_folder, "data", config["folder_structure"]["data_files"]["test"]),
         "field_delimiter": config["data"]["field_delimiter"],
         "label_dictionary": config["data"]["label_dictionary"],
         "num_classes": len(config["data"]["label_dictionary"]),
@@ -44,9 +47,10 @@ def format_configuration_variables(config):
     return project_configuration_variables
 
 
-def load_configuration_variables(experiment_name="project_config.example.yml"):
+def load_configuration_variables(application_folder, experiment_name="project_config.example.yml"):
     """
     Function that return project configuration variables based on the experiment file that is being used
+    :param application_folder: (str) path to the application folder
     :param experiment_name: (str) experiment file name
     :return: project_configuration_variables : (dict) variable containing project configuration variables
     """
@@ -57,7 +61,8 @@ def load_configuration_variables(experiment_name="project_config.example.yml"):
 
     # Load project configuration variables
     try:
-        project_configuration_variables = format_configuration_variables(yaml.safe_load(open(setup_file, 'r')))
+        project_configuration_variables = format_configuration_variables(application_folder=application_folder,
+                                                                         config=yaml.safe_load(open(setup_file, 'r')))
     except KeyError:
         raise
     except:
@@ -372,6 +377,8 @@ def parse_arguments_and_get_trainer_parameters():
         print_green("This is done by specifying --index=xxx")
         exit()
 
-    project_variables = load_configuration_variables(parsed_arguments.config)
+    project_variables = load_configuration_variables(
+        application_folder=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        experiment_name=parsed_arguments.config)
 
     return project_variables, parsed_arguments.index

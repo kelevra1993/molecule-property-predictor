@@ -1375,42 +1375,6 @@ tensorflow-gpu = ["tensorflow-gpu (>=2.13.0,<2.14.0)"]
 tensorflow-rocm = ["tensorflow-rocm (>=2.13.0,<2.14.0)"]
 
 [[package]]
-name = "tensorflow-macos"
-version = "2.13.0"
-description = "TensorFlow is an open source machine learning framework for everyone."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "tensorflow_macos-2.13.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:331cc23682374ca5f3f92e069bd7fbb6e4d48a50278a9cd05e5b33f16d9a31e7"},
-    {file = "tensorflow_macos-2.13.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:5dca8291125c0151bf426a2789689e02c623ce4540432cf66a073d361d3d6870"},
-    {file = "tensorflow_macos-2.13.0-cp38-cp38-macosx_12_0_arm64.whl", hash = "sha256:b0cea604f50a032dc426d7a6a91dc53a9df001cfa94fc814972e9d4cf062d31b"},
-    {file = "tensorflow_macos-2.13.0-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:d9571357a39cc8cdecfd22e67dfdcebf840be67a88a8c7464bd3b9b3e0aad446"},
-]
-
-[package.dependencies]
-absl-py = ">=1.0.0"
-astunparse = ">=1.6.0"
-flatbuffers = ">=23.1.21"
-gast = ">=0.2.1,<=0.4.0"
-google-pasta = ">=0.1.1"
-grpcio = ">=1.24.3,<2.0"
-h5py = ">=2.9.0"
-keras = ">=2.13.1,<2.14"
-libclang = ">=13.0.0"
-numpy = ">=1.22,<=1.24.3"
-opt-einsum = ">=2.3.2"
-packaging = "*"
-protobuf = ">=3.20.3,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
-setuptools = "*"
-six = ">=1.12.0"
-tensorboard = ">=2.13,<2.14"
-tensorflow-estimator = ">=2.13.0,<2.14"
-tensorflow-io-gcs-filesystem = {version = ">=0.23.1", markers = "platform_machine != \"arm64\" or platform_system != \"Darwin\""}
-termcolor = ">=1.1.0"
-typing-extensions = ">=3.6.6,<4.6.0"
-wrapt = ">=1.11.0"
-
-[[package]]
 name = "termcolor"
 version = "2.3.0"
 description = "ANSI color formatting for output in terminal"
@@ -1603,4 +1567,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.10"
-content-hash = "8d2a2fa91f25ea34e6c6dae5915d71ac8b908fbbaa36c924ae4bb5e87098f22d"
+content-hash = "a91231988454431869f7c0118053f3158245fb8f660c9aec2231d16ddb793e2a"
