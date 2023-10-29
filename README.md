@@ -2,6 +2,18 @@
 
 The following repository is a classification library intended to train, evaluate and predict molecule properties.
 
+* [Molecule Property Predictor](#molecule-property-predictor)
+   * [Installation](#installation)
+      * [Using Docker](#using-docker)
+      * [Without Using Docker](#without-using-docker)
+   * [Training, Evaluation And Prediction](#training-evaluation-and-prediction)
+      * [Description of the configuration file](#description-of-the-configuration-file)
+      * [Training A Model](#training-a-model)
+      * [Evaluating A Model](#evaluating-a-model)
+      * [Prediction of a Smile String For A Specific Model](#prediction-of-a-smile-string-for-a-specific-model)
+   * [Flask Application](#flask-application)
+   * [Common errors](#common-errors)
+
 ## Installation
 The installation and usage of the library can be done in two manners, with or without docker.
 
