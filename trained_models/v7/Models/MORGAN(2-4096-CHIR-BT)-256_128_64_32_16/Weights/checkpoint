@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/Robert/PycharmProjects/molecule-property-predictor/trained_models/v7/Models/MORGAN(2-4096-CHIR-BT)-256_128_64_32_16/Weights/Iteration_100000"
+all_model_checkpoint_paths: "/Users/Robert/PycharmProjects/molecule-property-predictor/trained_models/v7/Models/MORGAN(2-4096-CHIR-BT)-256_128_64_32_16/Weights/Iteration_100000"

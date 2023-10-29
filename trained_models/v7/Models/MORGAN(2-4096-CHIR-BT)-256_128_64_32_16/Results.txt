@@ -1,0 +1,1400 @@
+
+--------------------------------------------------
+Model Iteration 500 Global Accuracy : 15.8%
+Recall On not_active Class Is : 100.0%
+Recall On active Class Is : 0.71%
+Average Recall On Both Classes Is 50.35%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 1000 Global Accuracy : 46.8%
+Recall On not_active Class Is : 75.0%
+Recall On active Class Is : 41.75%
+Average Recall On Both Classes Is 58.37%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 1500 Global Accuracy : 60.4%
+Recall On not_active Class Is : 68.42%
+Recall On active Class Is : 58.96%
+Average Recall On Both Classes Is 63.69%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 2000 Global Accuracy : 71.0%
+Recall On not_active Class Is : 56.58%
+Recall On active Class Is : 73.58%
+Average Recall On Both Classes Is 65.08%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 2500 Global Accuracy : 60.4%
+Recall On not_active Class Is : 71.05%
+Recall On active Class Is : 58.49%
+Average Recall On Both Classes Is 64.77%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 3000 Global Accuracy : 62.8%
+Recall On not_active Class Is : 68.42%
+Recall On active Class Is : 61.79%
+Average Recall On Both Classes Is 65.11%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 3500 Global Accuracy : 75.8%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 82.31%
+Average Recall On Both Classes Is 60.89%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 4000 Global Accuracy : 47.6%
+Recall On not_active Class Is : 85.53%
+Recall On active Class Is : 40.8%
+Average Recall On Both Classes Is 63.16%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 4500 Global Accuracy : 69.2%
+Recall On not_active Class Is : 53.95%
+Recall On active Class Is : 71.93%
+Average Recall On Both Classes Is 62.94%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 5000 Global Accuracy : 59.2%
+Recall On not_active Class Is : 69.74%
+Recall On active Class Is : 57.31%
+Average Recall On Both Classes Is 63.52%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 5500 Global Accuracy : 74.4%
+Recall On not_active Class Is : 57.89%
+Recall On active Class Is : 77.36%
+Average Recall On Both Classes Is 67.63%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 6000 Global Accuracy : 67.6%
+Recall On not_active Class Is : 63.16%
+Recall On active Class Is : 68.4%
+Average Recall On Both Classes Is 65.78%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 6500 Global Accuracy : 74.8%
+Recall On not_active Class Is : 47.37%
+Recall On active Class Is : 79.72%
+Average Recall On Both Classes Is 63.54%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 7000 Global Accuracy : 62.4%
+Recall On not_active Class Is : 64.47%
+Recall On active Class Is : 62.03%
+Average Recall On Both Classes Is 63.25%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 7500 Global Accuracy : 71.8%
+Recall On not_active Class Is : 47.37%
+Recall On active Class Is : 76.18%
+Average Recall On Both Classes Is 61.77%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 8000 Global Accuracy : 69.2%
+Recall On not_active Class Is : 64.47%
+Recall On active Class Is : 70.05%
+Average Recall On Both Classes Is 67.26%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 8500 Global Accuracy : 70.6%
+Recall On not_active Class Is : 51.32%
+Recall On active Class Is : 74.06%
+Average Recall On Both Classes Is 62.69%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 9000 Global Accuracy : 66.6%
+Recall On not_active Class Is : 63.16%
+Recall On active Class Is : 67.22%
+Average Recall On Both Classes Is 65.19%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 9500 Global Accuracy : 72.6%
+Recall On not_active Class Is : 48.68%
+Recall On active Class Is : 76.89%
+Average Recall On Both Classes Is 62.79%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 10000 Global Accuracy : 76.4%
+Recall On not_active Class Is : 43.42%
+Recall On active Class Is : 82.31%
+Average Recall On Both Classes Is 62.87%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 10500 Global Accuracy : 62.2%
+Recall On not_active Class Is : 68.42%
+Recall On active Class Is : 61.08%
+Average Recall On Both Classes Is 64.75%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 11000 Global Accuracy : 76.8%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 83.25%
+Average Recall On Both Classes Is 62.02%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 11500 Global Accuracy : 72.0%
+Recall On not_active Class Is : 53.95%
+Recall On active Class Is : 75.24%
+Average Recall On Both Classes Is 64.59%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 12000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 84.91%
+Average Recall On Both Classes Is 60.87%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 12500 Global Accuracy : 76.2%
+Recall On not_active Class Is : 43.42%
+Recall On active Class Is : 82.08%
+Average Recall On Both Classes Is 62.75%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 13000 Global Accuracy : 70.8%
+Recall On not_active Class Is : 52.63%
+Recall On active Class Is : 74.06%
+Average Recall On Both Classes Is 63.34%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 13500 Global Accuracy : 72.8%
+Recall On not_active Class Is : 48.68%
+Recall On active Class Is : 77.12%
+Average Recall On Both Classes Is 62.9%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 14000 Global Accuracy : 75.4%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 82.08%
+Average Recall On Both Classes Is 60.12%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 14500 Global Accuracy : 75.0%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 81.6%
+Average Recall On Both Classes Is 59.88%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 15000 Global Accuracy : 71.4%
+Recall On not_active Class Is : 42.11%
+Recall On active Class Is : 76.65%
+Average Recall On Both Classes Is 59.38%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 15500 Global Accuracy : 79.6%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 89.39%
+Average Recall On Both Classes Is 57.19%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 16000 Global Accuracy : 76.8%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 84.67%
+Average Recall On Both Classes Is 58.78%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 16500 Global Accuracy : 74.0%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 79.95%
+Average Recall On Both Classes Is 60.37%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 17000 Global Accuracy : 79.0%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 59.54%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 17500 Global Accuracy : 73.4%
+Recall On not_active Class Is : 42.11%
+Recall On active Class Is : 79.01%
+Average Recall On Both Classes Is 60.56%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 18000 Global Accuracy : 74.2%
+Recall On not_active Class Is : 44.74%
+Recall On active Class Is : 79.48%
+Average Recall On Both Classes Is 62.11%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 18500 Global Accuracy : 65.0%
+Recall On not_active Class Is : 56.58%
+Recall On active Class Is : 66.51%
+Average Recall On Both Classes Is 61.54%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 19000 Global Accuracy : 75.6%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 81.84%
+Average Recall On Both Classes Is 61.31%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 19500 Global Accuracy : 75.8%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 82.31%
+Average Recall On Both Classes Is 60.89%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 20000 Global Accuracy : 72.2%
+Recall On not_active Class Is : 44.74%
+Recall On active Class Is : 77.12%
+Average Recall On Both Classes Is 60.93%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 20500 Global Accuracy : 79.0%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 61.7%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 21000 Global Accuracy : 69.6%
+Recall On not_active Class Is : 46.05%
+Recall On active Class Is : 73.82%
+Average Recall On Both Classes Is 59.94%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 21500 Global Accuracy : 70.8%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 76.18%
+Average Recall On Both Classes Is 58.48%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 22000 Global Accuracy : 80.4%
+Recall On not_active Class Is : 22.37%
+Recall On active Class Is : 90.8%
+Average Recall On Both Classes Is 56.59%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 22500 Global Accuracy : 77.6%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 57.09%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 23000 Global Accuracy : 78.4%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 57.57%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 23500 Global Accuracy : 66.8%
+Recall On not_active Class Is : 47.37%
+Recall On active Class Is : 70.28%
+Average Recall On Both Classes Is 58.83%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 24000 Global Accuracy : 77.4%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 59.14%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 24500 Global Accuracy : 71.2%
+Recall On not_active Class Is : 44.74%
+Recall On active Class Is : 75.94%
+Average Recall On Both Classes Is 60.34%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 25000 Global Accuracy : 74.4%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 80.66%
+Average Recall On Both Classes Is 60.07%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 25500 Global Accuracy : 76.0%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 82.78%
+Average Recall On Both Classes Is 60.47%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 26000 Global Accuracy : 76.2%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 82.55%
+Average Recall On Both Classes Is 61.67%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 26500 Global Accuracy : 78.6%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 59.3%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 27000 Global Accuracy : 75.4%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 81.84%
+Average Recall On Both Classes Is 60.66%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 27500 Global Accuracy : 78.4%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 59.73%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 28000 Global Accuracy : 74.6%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 81.37%
+Average Recall On Both Classes Is 59.11%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 28500 Global Accuracy : 73.6%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 79.72%
+Average Recall On Both Classes Is 59.6%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 29000 Global Accuracy : 76.6%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 85.14%
+Average Recall On Both Classes Is 57.04%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 29500 Global Accuracy : 80.0%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 89.62%
+Average Recall On Both Classes Is 57.97%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 30000 Global Accuracy : 77.2%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.14%
+Average Recall On Both Classes Is 59.02%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 30500 Global Accuracy : 75.2%
+Recall On not_active Class Is : 34.21%
+Recall On active Class Is : 82.55%
+Average Recall On Both Classes Is 58.38%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 31000 Global Accuracy : 78.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 59.07%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 31500 Global Accuracy : 75.2%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 81.84%
+Average Recall On Both Classes Is 60.0%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 32000 Global Accuracy : 77.0%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 84.43%
+Average Recall On Both Classes Is 59.98%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 32500 Global Accuracy : 73.6%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 79.95%
+Average Recall On Both Classes Is 59.06%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 33000 Global Accuracy : 79.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 87.97%
+Average Recall On Both Classes Is 59.12%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 33500 Global Accuracy : 76.0%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 82.55%
+Average Recall On Both Classes Is 61.01%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 34000 Global Accuracy : 74.8%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 81.37%
+Average Recall On Both Classes Is 59.76%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 34500 Global Accuracy : 76.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 84.43%
+Average Recall On Both Classes Is 57.35%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 35000 Global Accuracy : 78.2%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 87.26%
+Average Recall On Both Classes Is 57.45%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 35500 Global Accuracy : 75.0%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 81.6%
+Average Recall On Both Classes Is 59.88%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 36000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 56.55%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 36500 Global Accuracy : 74.2%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 81.13%
+Average Recall On Both Classes Is 58.33%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 37000 Global Accuracy : 77.4%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 86.32%
+Average Recall On Both Classes Is 56.98%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 37500 Global Accuracy : 76.0%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 83.96%
+Average Recall On Both Classes Is 57.77%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 38000 Global Accuracy : 78.8%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 58.88%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 38500 Global Accuracy : 77.0%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 57.82%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 39000 Global Accuracy : 70.8%
+Recall On not_active Class Is : 50.0%
+Recall On active Class Is : 74.53%
+Average Recall On Both Classes Is 62.26%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 39500 Global Accuracy : 76.0%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 83.02%
+Average Recall On Both Classes Is 59.93%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 40000 Global Accuracy : 79.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 87.74%
+Average Recall On Both Classes Is 59.66%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 40500 Global Accuracy : 72.6%
+Recall On not_active Class Is : 44.74%
+Recall On active Class Is : 77.59%
+Average Recall On Both Classes Is 61.17%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 41000 Global Accuracy : 76.4%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 83.25%
+Average Recall On Both Classes Is 60.71%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 41500 Global Accuracy : 75.4%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 82.31%
+Average Recall On Both Classes Is 59.58%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 42000 Global Accuracy : 73.4%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 79.95%
+Average Recall On Both Classes Is 58.4%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 42500 Global Accuracy : 74.4%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 80.66%
+Average Recall On Both Classes Is 60.07%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 43000 Global Accuracy : 77.2%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 85.85%
+Average Recall On Both Classes Is 57.4%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 43500 Global Accuracy : 78.4%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 59.73%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 44000 Global Accuracy : 78.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 58.53%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 44500 Global Accuracy : 75.4%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 82.55%
+Average Recall On Both Classes Is 59.04%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 45000 Global Accuracy : 77.0%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 57.28%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 45500 Global Accuracy : 79.6%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 88.92%
+Average Recall On Both Classes Is 58.27%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 46000 Global Accuracy : 77.0%
+Recall On not_active Class Is : 34.21%
+Recall On active Class Is : 84.67%
+Average Recall On Both Classes Is 59.44%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 46500 Global Accuracy : 76.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 84.43%
+Average Recall On Both Classes Is 58.66%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 47000 Global Accuracy : 76.4%
+Recall On not_active Class Is : 34.21%
+Recall On active Class Is : 83.96%
+Average Recall On Both Classes Is 59.09%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 47500 Global Accuracy : 75.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 83.25%
+Average Recall On Both Classes Is 58.07%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 48000 Global Accuracy : 79.2%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 88.44%
+Average Recall On Both Classes Is 58.04%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 48500 Global Accuracy : 75.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 83.25%
+Average Recall On Both Classes Is 56.76%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 49000 Global Accuracy : 75.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 83.02%
+Average Recall On Both Classes Is 57.3%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 49500 Global Accuracy : 74.6%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 81.37%
+Average Recall On Both Classes Is 59.11%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 50000 Global Accuracy : 75.0%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 82.55%
+Average Recall On Both Classes Is 57.72%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 50500 Global Accuracy : 76.8%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 84.91%
+Average Recall On Both Classes Is 58.24%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 51000 Global Accuracy : 76.8%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 85.14%
+Average Recall On Both Classes Is 57.7%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 51500 Global Accuracy : 77.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 58.48%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 52000 Global Accuracy : 72.8%
+Recall On not_active Class Is : 42.11%
+Recall On active Class Is : 78.3%
+Average Recall On Both Classes Is 60.2%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 52500 Global Accuracy : 74.0%
+Recall On not_active Class Is : 43.42%
+Recall On active Class Is : 79.48%
+Average Recall On Both Classes Is 61.45%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 53000 Global Accuracy : 64.2%
+Recall On not_active Class Is : 55.26%
+Recall On active Class Is : 65.8%
+Average Recall On Both Classes Is 60.53%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 53500 Global Accuracy : 78.0%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 86.32%
+Average Recall On Both Classes Is 58.95%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 54000 Global Accuracy : 79.4%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 88.68%
+Average Recall On Both Classes Is 58.16%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 54500 Global Accuracy : 77.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 59.25%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 55000 Global Accuracy : 78.8%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 58.88%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 55500 Global Accuracy : 74.8%
+Recall On not_active Class Is : 34.21%
+Recall On active Class Is : 82.08%
+Average Recall On Both Classes Is 58.14%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 56000 Global Accuracy : 76.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 84.2%
+Average Recall On Both Classes Is 57.89%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 56500 Global Accuracy : 76.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 84.43%
+Average Recall On Both Classes Is 58.66%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 57000 Global Accuracy : 76.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 84.43%
+Average Recall On Both Classes Is 58.66%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 57500 Global Accuracy : 77.8%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.85%
+Average Recall On Both Classes Is 59.37%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 58000 Global Accuracy : 78.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 58.53%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 58500 Global Accuracy : 77.0%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 84.91%
+Average Recall On Both Classes Is 58.9%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 59000 Global Accuracy : 77.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 58.48%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 59500 Global Accuracy : 74.0%
+Recall On not_active Class Is : 36.84%
+Recall On active Class Is : 80.66%
+Average Recall On Both Classes Is 58.75%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 60000 Global Accuracy : 72.6%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 78.54%
+Average Recall On Both Classes Is 59.01%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 60500 Global Accuracy : 78.2%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 86.32%
+Average Recall On Both Classes Is 59.61%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 61000 Global Accuracy : 77.2%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 84.67%
+Average Recall On Both Classes Is 60.1%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 61500 Global Accuracy : 77.4%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 59.14%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 62000 Global Accuracy : 78.0%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 57.87%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 62500 Global Accuracy : 78.6%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 58.22%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 63000 Global Accuracy : 73.4%
+Recall On not_active Class Is : 34.21%
+Recall On active Class Is : 80.42%
+Average Recall On Both Classes Is 57.32%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 63500 Global Accuracy : 76.4%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 84.67%
+Average Recall On Both Classes Is 57.47%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 64000 Global Accuracy : 75.2%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 82.78%
+Average Recall On Both Classes Is 57.84%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 64500 Global Accuracy : 77.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 58.48%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 65000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 56.01%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 65500 Global Accuracy : 74.2%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 80.66%
+Average Recall On Both Classes Is 59.41%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 66000 Global Accuracy : 76.6%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 55.96%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 66500 Global Accuracy : 73.2%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 79.48%
+Average Recall On Both Classes Is 58.82%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 67000 Global Accuracy : 76.6%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 83.96%
+Average Recall On Both Classes Is 59.74%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 67500 Global Accuracy : 78.4%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 87.74%
+Average Recall On Both Classes Is 57.03%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 68000 Global Accuracy : 74.0%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 79.95%
+Average Recall On Both Classes Is 60.37%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 68500 Global Accuracy : 77.0%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 85.14%
+Average Recall On Both Classes Is 58.36%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 69000 Global Accuracy : 76.8%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 84.91%
+Average Recall On Both Classes Is 58.24%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 69500 Global Accuracy : 75.8%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 83.73%
+Average Recall On Both Classes Is 57.65%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 70000 Global Accuracy : 77.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 57.94%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 70500 Global Accuracy : 77.0%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 57.82%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 71000 Global Accuracy : 76.0%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 83.25%
+Average Recall On Both Classes Is 59.39%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 71500 Global Accuracy : 77.4%
+Recall On not_active Class Is : 34.21%
+Recall On active Class Is : 85.14%
+Average Recall On Both Classes Is 59.68%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 72000 Global Accuracy : 78.8%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 87.97%
+Average Recall On Both Classes Is 57.8%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 72500 Global Accuracy : 77.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 59.25%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 73000 Global Accuracy : 68.8%
+Recall On not_active Class Is : 44.74%
+Recall On active Class Is : 73.11%
+Average Recall On Both Classes Is 58.93%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 73500 Global Accuracy : 76.4%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 84.91%
+Average Recall On Both Classes Is 56.93%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 74000 Global Accuracy : 78.6%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 88.21%
+Average Recall On Both Classes Is 56.6%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 74500 Global Accuracy : 81.6%
+Recall On not_active Class Is : 22.37%
+Recall On active Class Is : 92.22%
+Average Recall On Both Classes Is 57.29%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 75000 Global Accuracy : 77.8%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 55.59%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 75500 Global Accuracy : 76.8%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 57.16%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 76000 Global Accuracy : 77.8%
+Recall On not_active Class Is : 22.37%
+Recall On active Class Is : 87.74%
+Average Recall On Both Classes Is 55.05%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 76500 Global Accuracy : 76.6%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 56.5%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 77000 Global Accuracy : 77.8%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 55.59%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 77500 Global Accuracy : 77.0%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 86.08%
+Average Recall On Both Classes Is 56.2%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 78000 Global Accuracy : 77.0%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 85.85%
+Average Recall On Both Classes Is 56.74%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 78500 Global Accuracy : 76.4%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 85.38%
+Average Recall On Both Classes Is 55.85%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 79000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 56.01%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 79500 Global Accuracy : 77.6%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 87.26%
+Average Recall On Both Classes Is 55.47%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 80000 Global Accuracy : 73.2%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 79.25%
+Average Recall On Both Classes Is 59.36%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 80500 Global Accuracy : 74.8%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 83.25%
+Average Recall On Both Classes Is 55.44%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 81000 Global Accuracy : 75.0%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 82.08%
+Average Recall On Both Classes Is 58.8%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 81500 Global Accuracy : 77.8%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 56.67%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 82000 Global Accuracy : 78.6%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 88.44%
+Average Recall On Both Classes Is 56.06%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 82500 Global Accuracy : 74.4%
+Recall On not_active Class Is : 39.47%
+Recall On active Class Is : 80.66%
+Average Recall On Both Classes Is 60.07%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 83000 Global Accuracy : 78.0%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 57.33%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 83500 Global Accuracy : 81.2%
+Recall On not_active Class Is : 11.84%
+Recall On active Class Is : 93.63%
+Average Recall On Both Classes Is 52.74%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 84000 Global Accuracy : 76.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 84.43%
+Average Recall On Both Classes Is 57.35%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 84500 Global Accuracy : 77.2%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 55.78%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 85000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 87.26%
+Average Recall On Both Classes Is 55.47%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 85500 Global Accuracy : 77.6%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 87.26%
+Average Recall On Both Classes Is 55.47%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 86000 Global Accuracy : 76.2%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 84.67%
+Average Recall On Both Classes Is 56.81%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 86500 Global Accuracy : 79.4%
+Recall On not_active Class Is : 21.05%
+Recall On active Class Is : 89.86%
+Average Recall On Both Classes Is 55.46%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 87000 Global Accuracy : 74.2%
+Recall On not_active Class Is : 40.79%
+Recall On active Class Is : 80.19%
+Average Recall On Both Classes Is 60.49%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 87500 Global Accuracy : 75.6%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 82.78%
+Average Recall On Both Classes Is 59.15%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 88000 Global Accuracy : 74.6%
+Recall On not_active Class Is : 35.53%
+Recall On active Class Is : 81.6%
+Average Recall On Both Classes Is 58.57%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 88500 Global Accuracy : 78.2%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 57.99%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 89000 Global Accuracy : 78.8%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 87.74%
+Average Recall On Both Classes Is 58.34%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 89500 Global Accuracy : 78.6%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 87.26%
+Average Recall On Both Classes Is 58.76%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 90000 Global Accuracy : 78.2%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 57.99%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 90500 Global Accuracy : 77.8%
+Recall On not_active Class Is : 26.32%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 56.67%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 91000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 86.56%
+Average Recall On Both Classes Is 57.09%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 91500 Global Accuracy : 77.8%
+Recall On not_active Class Is : 27.63%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 57.21%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 92000 Global Accuracy : 77.4%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 55.9%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 92500 Global Accuracy : 78.0%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 56.25%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 93000 Global Accuracy : 78.0%
+Recall On not_active Class Is : 25.0%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 56.25%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 93500 Global Accuracy : 73.8%
+Recall On not_active Class Is : 42.11%
+Recall On active Class Is : 79.48%
+Average Recall On Both Classes Is 60.79%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 94000 Global Accuracy : 72.8%
+Recall On not_active Class Is : 43.42%
+Recall On active Class Is : 78.07%
+Average Recall On Both Classes Is 60.74%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 94500 Global Accuracy : 79.0%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 88.92%
+Average Recall On Both Classes Is 56.3%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 95000 Global Accuracy : 75.4%
+Recall On not_active Class Is : 38.16%
+Recall On active Class Is : 82.08%
+Average Recall On Both Classes Is 60.12%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 95500 Global Accuracy : 76.8%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 84.91%
+Average Recall On Both Classes Is 58.24%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 96000 Global Accuracy : 76.6%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 84.67%
+Average Recall On Both Classes Is 58.12%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 96500 Global Accuracy : 77.2%
+Recall On not_active Class Is : 30.26%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 57.94%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 97000 Global Accuracy : 79.4%
+Recall On not_active Class Is : 23.68%
+Recall On active Class Is : 89.39%
+Average Recall On Both Classes Is 56.54%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 97500 Global Accuracy : 76.2%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 84.2%
+Average Recall On Both Classes Is 57.89%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 98000 Global Accuracy : 78.6%
+Recall On not_active Class Is : 28.95%
+Recall On active Class Is : 87.5%
+Average Recall On Both Classes Is 58.22%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 98500 Global Accuracy : 78.6%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 87.03%
+Average Recall On Both Classes Is 59.3%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 99000 Global Accuracy : 77.6%
+Recall On not_active Class Is : 32.89%
+Recall On active Class Is : 85.61%
+Average Recall On Both Classes Is 59.25%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 99500 Global Accuracy : 78.4%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 59.19%
+--------------------------------------------------
+
+--------------------------------------------------
+Model Iteration 100000 Global Accuracy : 78.4%
+Recall On not_active Class Is : 31.58%
+Recall On active Class Is : 86.79%
+Average Recall On Both Classes Is 59.19%
+--------------------------------------------------

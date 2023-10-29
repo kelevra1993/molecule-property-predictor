@@ -1,0 +1,75 @@
+# This file describes the configuration for the project (data, hyperparameters, etc.)
+# Some of the values have been set to usable defaults, while others will need to be changed
+
+##############################################################################################
+#                                          Folders                                           #
+##############################################################################################
+folder_structure:
+    # Path to folder where Model Training and Validation Information is stored.
+    project_folder: "v8"
+
+    data_files:
+        train: "single/balanced-train.csv"
+        validation: "single/valid.csv"
+        test: "single/test.csv"
+
+##############################################################################################
+#                                            Data                                            #
+##############################################################################################
+data:
+    # Labels For Project Ordered By Classification Index
+    label_dictionary:
+        { 0: "not_active", 1: "active" }
+
+    field_delimiter: "," # field delimiter for csv file
+
+    multiple_property_prediction:
+        activated: False # Boolean that indicates that we want P1, P2, P3, P4 ...,
+        number_of_prediction_columns: 9 # Number Of Columns that interest us
+
+##############################################################
+#                    Data Specifications                     #
+##############################################################
+fingerprint:
+    activated: False
+    type: "morgan"
+    parameters:
+        morgan:
+            radius: 2
+            size: 4096
+            use_chirality: True
+            use_bond_types: True
+            use_features: False
+
+##############################################################################################
+#                                            Model                                           #
+##############################################################################################
+model:
+    fully_connected_sizes: [256,128,64,32] # Number of neurons in fully connected matrices
+
+    # Preparation for second model that will have to take in smile sequence as input
+    aggregation:
+        type: "blstm" # must be a value in ["blstm"]
+        parameters:
+            # Bi-LSTM Parameters
+            blstm:
+                number_of_hidden_units: 100
+                number_of_layers: 2
+                number_of_matrices: 3
+
+
+##############################################################################################
+#                                          Training                                          #
+##############################################################################################
+training:
+    settings:
+        # Number of iterations after which we save a model and run inference on the whole validation dataset
+        weight_saver: 500
+        # Number of iterations before output to Terminal
+        info_dump: 250
+        # Number of iterations that will be ran
+        num_iterations: 100000
+    hyperparameters:
+        # Learning rate. Can either be a float (0.001) or a string with the format xe-y
+        learning_rate: 1e-4
+
