@@ -4,7 +4,7 @@ services:
     image: servier
     container_name: servier_container
     ports:
-      - "8080:5000"
+      - "8080:8080"
     volumes:
       - ./config:/home/app/config
       - ./data:/home/app/data

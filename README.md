@@ -57,7 +57,7 @@ To set up the parameters of the architectures that will be used as well as the p
 These configuration files can be found under the _**config**_ folder. During the training process, models might be saved at a defined iteration step.
 These models will be stored under _**trained_models**_ folder. The Data that is used for training, validation and testing can be found under the _**data**_ folder.
 
-### Description of a configuration file
+### Description of the configuration file
 If one wishes to train a new architecture, copy the _**project_config.example.yml**_ file and change the name to an experiment_name.
 
 ```sh
@@ -124,3 +124,65 @@ model:
     fully_connected_sizes: [256,128,64,32] # Number of neurons in fully connected matrices
 ```
 
+### Training A Model
+To train a model, once you have specified your parameters in the configuration file you can launch it using the following command
+
+```sh
+# if you have a configuration file named v2.yml 
+python servier/main.py --train --config=v2.yml
+```
+
+The output should look something like this.
+<div align="center">
+  <img src="Readme/image.png" alt="train_output"/>
+</div>
+
+At a given step, here each 500 steps, evaluation is launched on the test set. And metrics are produces and displayed in the terminal.
+These metrics can also be found in a confusion matrix image that can should look something like this.
+<div align="center">
+  <img src="Readme/Confusion_Matrix_500.png" alt="confusion_matrix"/>
+</div>
+
+Result files will be stored under _**trained_models**_ folder under the folder with the experiment name that you previously set.
+Here in our case it should be under the folder **_v2_**. You should also be able to find the weights of the model in the same folder.
+
+### Evaluating A Model
+
+Once a model is trained and you have a dastaset that you would like to test on, it can be done by setting the test file in the configuration file.
+Then you can launch evaluation on the model that interest you the most by running the following command.
+Note : You have to specify the index of the iteration that is of interest to you.
+
+```sh
+# if you have a configuration file named v2.yml 
+python servier/main.py --evaluate --index=500 --config=v2.yml
+```
+
+### Prediction of a Smile String For A Specific Model
+One can launch prediction of a specific model like shown below. Here we are using the model that was saved at iteration 500,
+under the v2 configuration and the smile string that we would like to predict is **_Cc1cccc(N2CCN(C(=O)C34CC5CC(CC(C5)C3)C4)CC2)c1C_**
+
+```sh
+python servier/main.py --predict --index=500 --config=v2.yml --smile='Cc1cccc(N2CCN(C(=O)C34CC5CC(CC(C5)C3)C4)CC2)c1C'
+```
+
+## Flask Application
+In order to run the Flask application for prediction just launch the following script.
+```sh
+# The port of communication with the application is 8080
+python servier/run.py --index=500 --config=v2.yml
+```
+
+## Common errors
+```
+import tensorflow as tf
+ModuleNotFoundError: No module named 'tensorflow'
+```
+Despite having Tensorflow installed, this error can arise for some specific hardware, requiring a specific type of tensorflow. To correct it just run :
+
+```sh
+poetry run pip install tensorflow==2.13.0
+
+# Output should look something like this
+# Installing collected packages: tensorflow-macos, tensorflow
+# Successfully installed tensorflow-2.13.0 tensorflow-macos-2.13.0
+```
