@@ -199,12 +199,12 @@ python servier/main.py --evaluate --index=500 --config=v2.yml
 ### Prediction of a Smile String For A Specific Model
 
 One can launch prediction of a specific model like shown below. Here we are using the model that was saved at iteration
-500,
-under the v2 configuration and the smile string that we would like to predict is *
+6500,
+under the v8 configuration and the smile string that we would like to predict is *
 *_Cc1cccc(N2CCN(C(=O)C34CC5CC(CC(C5)C3)C4)CC2)c1C_**
 
 ```sh
-python servier/main.py --predict --index=500 --config=v2.yml --smile='Cc1cccc(N2CCN(C(=O)C34CC5CC(CC(C5)C3)C4)CC2)c1C'
+python servier/main.py --predict --index=6500 --config=v8.yml --smile='Cc1cccc(N2CCN(C(=O)C34CC5CC(CC(C5)C3)C4)CC2)c1C'
 ```
 
 ## Flask Application
@@ -213,7 +213,11 @@ In order to run the Flask application for prediction just launch the following s
 
 ```sh
 # The port of communication with the application is 8080
-python servier/run.py --index=500 --config=v2.yml
+python servier/run.py --index={index_of_interest} --config={configuration_file_of_interest}.yml
+
+# An example if you want to launch The M2 Model
+python servier/run.py --index=6500 --config=v8.yml
+
 ```
 
 ## M1 MODEL
