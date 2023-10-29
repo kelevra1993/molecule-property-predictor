@@ -1,0 +1,35 @@
+{
+    "PROJECT_FOLDER":"/Users/Robert/PycharmProjects/molecule-property-predictor/trained_models/v15",
+    "aggregation_parameters":{},
+    "aggregation_type":"",
+    "field_delimiter":",",
+    "fingerprint_parameters":{
+        "radius":2,
+        "size":4096,
+        "use_bond_types":true,
+        "use_chirality":true,
+        "use_features":false
+    },
+    "fingerprint_type":"morgan",
+    "fully_connected_sizes":[
+        256,
+        128,
+        64,
+        32
+    ],
+    "info_dump":250,
+    "label_dictionary":{
+        "0":"not_active",
+        "1":"active"
+    },
+    "learning_rate":0.0001,
+    "multiple_property_prediction":true,
+    "num_classes":2,
+    "num_iterations":100000,
+    "number_of_prediction_columns":9,
+    "test_csv_file":"/Users/Robert/PycharmProjects/molecule-property-predictor/data/multi/test.csv",
+    "train_csv_file":"/Users/Robert/PycharmProjects/molecule-property-predictor/data/multi/train.csv",
+    "use_fingerprint":true,
+    "valid_csv_file":"/Users/Robert/PycharmProjects/molecule-property-predictor/data/multi/valid.csv",
+    "weight_saver":500
+}
