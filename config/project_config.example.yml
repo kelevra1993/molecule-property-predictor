@@ -5,9 +5,12 @@
 #                                          Folders                                           #
 ##############################################################################################
 folder_structure:
-    # Path to folder where Model Training and Validation Information is stored.
-    project_folder: "path/to/experiment_folder"
+    # Name of the folder where Model Training and Validation Information is stored.
+    project_folder: "experiment_folder"
 
+    # Path of the csv files where data is stored [ Path is referenced from data folder ]
+    # Important : If the absolute paths is "/home/molecule-properties/data/single/train.csv"
+    # You should only specify "single/train.csv"
     data_files:
         train: "path/to/training.csv"
         validation: "path/to/validation.csv"
@@ -45,9 +48,7 @@ fingerprint:
 #                                            Model                                           #
 ##############################################################################################
 model:
-    fully_connected_sizes: [256,128,64,32] # Number of neurons in fully connected matrices
-
-    # Preparation for second model that will have to take in smile sequence as input
+    # Preprocessing in order to account for the model that takes one hot sequence rather than the morgan fingerprint
     aggregation:
         type: "blstm" # must be a value in ["blstm"]
         parameters:
@@ -56,6 +57,8 @@ model:
                 number_of_hidden_units: 100
                 number_of_layers: 2
                 number_of_matrices: 4
+
+    fully_connected_sizes: [256,128,64,32] # Number of neurons in fully connected matrices
 
 ##############################################################################################
 #                                          Training                                          #
@@ -67,7 +70,7 @@ training:
         # Number of iterations before output to Terminal
         info_dump: 250
         # Number of iterations that will be ran
-        num_iterations: 50000
+        num_iterations: 100000
     hyperparameters:
         # Learning rate. Can either be a float (0.001) or a string with the format xe-y
         learning_rate: 2e-4
