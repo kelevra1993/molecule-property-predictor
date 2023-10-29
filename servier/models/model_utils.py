@@ -283,7 +283,8 @@ def restore_last_model(path, session, saver, index_iteration=None):
     else:
         if index_iteration:
             print_red(f"This Model Does Not Seem To Exist : {str(last_model_path)}.meta")
-            print_green(f"Either Iteration {index_iteration} Does Not Exist Or The Specified Configuration File Is False")
+            print_green(
+                f"Either Iteration {index_iteration} Does Not Exist Or The Specified Configuration File Is False")
             exit()
         print_red("No Initiation Model Weights Will Be Used...")
         print_green("We generate A New Model That Will Be Trained From Scratch\n")
