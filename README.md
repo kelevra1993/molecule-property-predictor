@@ -209,7 +209,11 @@ python servier/main.py --predict --index=6500 --config=v8.yml --smile='Cc1cccc(N
 
 ## Flask Application
 
-In order to run the Flask application for prediction just launch the following script.
+In order to run the Flask application for prediction just launch the following script. The argument that is used is smile_string, when running for the flask application.
+
+<div align="center">
+  <img src="Readme/flask.png" alt="train_output"/>
+</div>
 
 ```sh
 # The port of communication with the application is 8080
